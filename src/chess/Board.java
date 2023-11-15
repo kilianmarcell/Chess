@@ -137,14 +137,20 @@ public class Board extends JFrame {
                             } else {
                                 if(possibleMoves.contains(square)) {
                                     System.out.println("Igen");
-                                    Square oldSquare = movingPiece.getPosition();
-                                    square.setPiece(movingPiece);
-                                    movingPiece.setPosition(square);
-                                    setPictureOfPiece(movingPiece);
-                                    oldSquare.removeAll();
+                                    if(square.getPiece() != null) {
+                                        square.removeAll();
+                                        square.setPiece(null);
+                                    }
 
-                                    //To show the picture of piece
-                                    square.revalidate();
+                                    Square oldSquare = movingPiece.getPosition();
+                                    oldSquare.setPiece(null);
+                                    oldSquare.removeAll(); //Removing the piece picture
+
+                                    square.setPiece(movingPiece); //Set square that the piece is on it
+                                    movingPiece.setPosition(square);
+                                    setPictureOfPiece(movingPiece); //Set the picture of the piece
+
+                                    square.revalidate(); //To show the picture of piece, refresh label
                                     oldSquare.repaint();
                                 }
                                 possibleMoves.clear();

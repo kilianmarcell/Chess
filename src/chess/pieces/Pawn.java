@@ -27,34 +27,38 @@ public class Pawn extends Piece {
             int x = getPosition().getRow();
             int y = getPosition().getColumn();
 
-            if(squares[x - 1][y].getPiece() == null) possibleMoves.add(squares[x - 1][y]);
-            if(!movedBefore && squares[x - 2][y].getPiece() == null) possibleMoves.add(squares[x - 2][y]);
-            if(y > 0) {
-                if(squares[x - 1][y - 1].getPiece() != null && squares[x - 1][y - 1].getPiece().getColor() != getColor()) {
-                    possibleMoves.add(squares[x][y - 1]);
+            if(x > 0) {
+                if(squares[x - 1][y].getPiece() == null) possibleMoves.add(squares[x - 1][y]);
+                if(x == 6 && !movedBefore && squares[x - 2][y].getPiece() == null) possibleMoves.add(squares[x - 2][y]);
+                if(y > 0) {
+                    if(squares[x - 1][y - 1].getPiece() != null && !squares[x - 1][y - 1].getPiece().getColor().equals(getColor())) {
+                        possibleMoves.add(squares[x - 1][y - 1]);
+                    }
                 }
-            }
-            if(y < 7) {
-                if (squares[x - 1][y + 1].getPiece() != null && squares[x + 1][y - 1].getPiece().getColor() != getColor()) {
-                    possibleMoves.add(squares[x][y - 1]);
+                if(y < 7) {
+                    if (squares[x - 1][y + 1].getPiece() != null && !squares[x - 1][y + 1].getPiece().getColor().equals(getColor())) {
+                        possibleMoves.add(squares[x - 1][y + 1]);
+                    }
                 }
             }
         }
         //Black pawns move
-        if(moveDirection == "down") {
+        else if(moveDirection == "down") {
             int x = getPosition().getRow();
             int y = getPosition().getColumn();
 
-            if(squares[x + 1][y].getPiece() == null) possibleMoves.add(squares[x + 1][y]);
-            if(!movedBefore && squares[x + 2][y].getPiece() == null) possibleMoves.add(squares[x + 2][y]);
-            if(y > 0) {
-                if(squares[x + 1][y - 1].getPiece() != null && squares[x - 1][y - 1].getPiece().getColor() != getColor()) {
-                    possibleMoves.add(squares[x][y + 1]);
+            if(x < 7) {
+                if(squares[x + 1][y].getPiece() == null) possibleMoves.add(squares[x + 1][y]);
+                if(x == 1 && !movedBefore && squares[x + 2][y].getPiece() == null) possibleMoves.add(squares[x + 2][y]);
+                if(y > 0) {
+                    if(squares[x + 1][y - 1].getPiece() != null && squares[x + 1][y - 1].getPiece().getColor() != getColor()) {
+                        possibleMoves.add(squares[x + 1][y - 1]);
+                    }
                 }
-            }
-            if(y < 7) {
-                if (squares[x + 1][y + 1].getPiece() != null && squares[x - 1][y + 1].getPiece().getColor() != getColor()) {
-                    possibleMoves.add(squares[x][y + 1]);
+                if(y < 7) {
+                    if (squares[x + 1][y + 1].getPiece() != null && squares[x + 1][y + 1].getPiece().getColor() != getColor()) {
+                        possibleMoves.add(squares[x + 1][y + 1]);
+                    }
                 }
             }
         }

@@ -1,10 +1,17 @@
 package chess;
 
-public interface Piece {
-    Square position = null;
-    String color = null;
+public class Piece {
+    private Square position = null;
 
-    default Square[] possibleMoves() {
+    private Square[] possibleMoves() {
         return null;
+    }
+
+    public Square getPosition() {
+        return position;
+    }
+
+    public void setPosition(Square position) {
+        this.position = position;
     }
 }

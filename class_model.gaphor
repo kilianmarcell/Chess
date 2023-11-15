@@ -74,7 +74,6 @@
 <ownedAttribute>
 <reflist>
 <ref refid="3a3f5442-7fc6-11ee-9fe5-74563c676c31"/>
-<ref refid="4559e319-7fc6-11ee-996b-74563c676c31"/>
 </reflist>
 </ownedAttribute>
 <ownedOperation>
@@ -93,7 +92,7 @@
 </Class>
 <ClassItem id="833d5142-7fc3-11ee-a786-74563c676c31">
 <matrix>
-<val>(1.0, 0.0, 0.0, 1.0, 446.0112305588279, 223.93569817138842)</val>
+<val>(1.0, 0.0, 0.0, 1.0, 446.011230558828, 233.9356981713883)</val>
 </matrix>
 <top-left>
 <val>(0.0, 0.0)</val>
@@ -102,7 +101,7 @@
 <val>183.0</val>
 </width>
 <height>
-<val>120.0</val>
+<val>100.0</val>
 </height>
 <diagram>
 <ref refid="58d6c536-66f8-11ec-b4c8-0456e5e540ed"/>
@@ -120,17 +119,6 @@
 </name>
 <typeValue>
 <val>Square</val>
-</typeValue>
-</Property>
-<Property id="4559e319-7fc6-11ee-996b-74563c676c31">
-<class_>
-<ref refid="833d2b61-7fc3-11ee-8db9-74563c676c31"/>
-</class_>
-<name>
-<val>color</val>
-</name>
-<typeValue>
-<val>PieceColor</val>
 </typeValue>
 </Property>
 <Operation id="538ad40d-7fc6-11ee-8e5a-74563c676c31">
@@ -222,7 +210,7 @@
 <val>(0.0, 0.0)</val>
 </top-left>
 <width>
-<val>120.0</val>
+<val>159.0</val>
 </width>
 <height>
 <val>80.0</val>
@@ -326,7 +314,7 @@
 <val>(0.0, 0.0)</val>
 </top-left>
 <width>
-<val>120.0</val>
+<val>159.0</val>
 </width>
 <height>
 <val>80.0</val>
@@ -799,7 +787,7 @@
 <val>(1.0, 0.0, 0.0, 1.0, 353.22800538062705, 301.41487012954735)</val>
 </matrix>
 <points>
-<val>[(184.28322517820078, -162.67678016546034), (184.2832251782009, -77.4791719581589)]</val>
+<val>[(184.28322517820078, -162.67678016546034), (184.2832251782009, -67.47917195815896)]</val>
 </points>
 <head-connection>
 <ref refid="4400f5f8-7fcb-11ee-9ddb-74563c676c31"/>
@@ -1380,7 +1368,7 @@
 <ref refid="ae1e6886-7fc6-11ee-837a-74563c676c31"/>
 </class_>
 <name>
-<val>moved</val>
+<val>movedBefore</val>
 </name>
 <typeValue>
 <val>boolean</val>
@@ -1391,7 +1379,7 @@
 <ref refid="abfd015d-7fc6-11ee-8558-74563c676c31"/>
 </class_>
 <name>
-<val>moved</val>
+<val>movedBefore</val>
 </name>
 <typeValue>
 <val>boolean</val>
@@ -1402,7 +1390,7 @@
 <ref refid="a0c42c53-7fc6-11ee-bbe8-74563c676c31"/>
 </class_>
 <name>
-<val>moved</val>
+<val>movedBefore</val>
 </name>
 <typeValue>
 <val>boolean</val>

@@ -2,5 +2,5 @@ package chess.pieces;
 
 import chess.Piece;
 
-public class Bishop implements Piece {
+public class Bishop extends Piece {
 }

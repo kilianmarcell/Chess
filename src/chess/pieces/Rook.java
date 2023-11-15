@@ -2,6 +2,10 @@ package chess.pieces;
 
 import chess.Piece;
 
-public class Rook implements Piece {
-    private boolean moved;
+public class Rook extends Piece {
+    private boolean movedBefore;
+
+    public Rook() {
+        this.movedBefore = false;
+    }
 }

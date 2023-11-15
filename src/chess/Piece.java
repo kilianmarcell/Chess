@@ -1,9 +1,16 @@
 package chess;
 
+import java.util.List;
+
 public class Piece {
     private Square position = null;
+    private String color;
 
-    private Square[] possibleMoves() {
+    public Piece(String color) {
+        this.color = color;
+    }
+
+    public List<Square> possibleMoves(Square squares[][]) {
         return null;
     }
 
@@ -13,5 +20,9 @@ public class Piece {
 
     public void setPosition(Square position) {
         this.position = position;
+    }
+
+    public String getColor() {
+        return color;
     }
 }

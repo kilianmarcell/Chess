@@ -74,6 +74,7 @@
 <ownedAttribute>
 <reflist>
 <ref refid="3a3f5442-7fc6-11ee-9fe5-74563c676c31"/>
+<ref refid="9a24259a-83ba-11ee-a649-74563c676c31"/>
 </reflist>
 </ownedAttribute>
 <ownedOperation>
@@ -92,7 +93,7 @@
 </Class>
 <ClassItem id="833d5142-7fc3-11ee-a786-74563c676c31">
 <matrix>
-<val>(1.0, 0.0, 0.0, 1.0, 446.011230558828, 233.9356981713883)</val>
+<val>(1.0, 0.0, 0.0, 1.0, 446.011230558828, 225.55488648610054)</val>
 </matrix>
 <top-left>
 <val>(0.0, 0.0)</val>
@@ -101,7 +102,7 @@
 <val>183.0</val>
 </width>
 <height>
-<val>100.0</val>
+<val>120.0</val>
 </height>
 <diagram>
 <ref refid="58d6c536-66f8-11ec-b4c8-0456e5e540ed"/>
@@ -787,7 +788,7 @@
 <val>(1.0, 0.0, 0.0, 1.0, 353.22800538062705, 301.41487012954735)</val>
 </matrix>
 <points>
-<val>[(184.28322517820078, -162.67678016546034), (184.2832251782009, -67.47917195815896)]</val>
+<val>[(184.28322517820078, -162.67678016546034), (184.2832251782009, -75.85998364344681)]</val>
 </points>
 <head-connection>
 <ref refid="4400f5f8-7fcb-11ee-9ddb-74563c676c31"/>
@@ -1405,6 +1406,17 @@
 </name>
 <typeValue>
 <val>boolean</val>
+</typeValue>
+</Property>
+<Property id="9a24259a-83ba-11ee-a649-74563c676c31">
+<class_>
+<ref refid="833d2b61-7fc3-11ee-8db9-74563c676c31"/>
+</class_>
+<name>
+<val>color</val>
+</name>
+<typeValue>
+<val>String</val>
 </typeValue>
 </Property>
 </gaphor>

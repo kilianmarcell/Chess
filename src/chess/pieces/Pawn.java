@@ -22,11 +22,10 @@ public class Pawn extends Piece {
 
     public List<Square> possibleMoves(Square squares[][]) {
         List<Square> possibleMoves = new ArrayList<>();
+        int x = getPosition().getRow();
+        int y = getPosition().getColumn();
         //White pawns move
         if(moveDirection == "up") {
-            int x = getPosition().getRow();
-            int y = getPosition().getColumn();
-
             if(x > 0) {
                 if(squares[x - 1][y].getPiece() == null) possibleMoves.add(squares[x - 1][y]);
                 if(x == 6 && !movedBefore && squares[x - 2][y].getPiece() == null) possibleMoves.add(squares[x - 2][y]);
@@ -44,9 +43,6 @@ public class Pawn extends Piece {
         }
         //Black pawns move
         else if(moveDirection == "down") {
-            int x = getPosition().getRow();
-            int y = getPosition().getColumn();
-
             if(x < 7) {
                 if(squares[x + 1][y].getPiece() == null) possibleMoves.add(squares[x + 1][y]);
                 if(x == 1 && !movedBefore && squares[x + 2][y].getPiece() == null) possibleMoves.add(squares[x + 2][y]);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jnlp codebase="https://nav.gov.hu" href="/pfile/jnlpFile?path=/nyomtatvanyok/letoltesek/nyomtatvanykitolto_programok/nyomtatvany_apeh/keretprogramok/AbevJava">
+    <information>
+        <title>keretprogramok</title>
+        <vendor>Nemzeti Ado- es Vamhivatal</vendor>
+        <offline-allowed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+    </information>
+    <security>
+        <all-permissions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+    </security>
+    <resources>
+        <j2se href="http://java.sun.com/products/autodl/j2se" version="1.8+"/>
+        <jar href="/pfile/programFile?path=/nyomtatvanyok/letoltesek/nyomtatvanykitolto_programok/nyomtatvany_apeh/keretprogramok/AbevJava"/>
+    </resources>
+    <application-desc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+</jnlp>

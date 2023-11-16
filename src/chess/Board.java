@@ -19,6 +19,7 @@ public class Board extends JFrame {
     private List<Square> possibleMoves = new ArrayList<>();
     private Piece movingPiece = null;
     private Image onePiecePicture[] = new Image[12]; //Stores the pictures if single pieces
+    private boolean whiteMove = true;
 
     public void create() {
         setBounds(8, 8, 640, 640);
@@ -130,28 +131,36 @@ public class Board extends JFrame {
                         if(square != null) {
                             if(movingPiece == null) {
                                 movingPiece = square.getPiece();
-                                if(movingPiece != null) possibleMoves = movingPiece.possibleMoves(squares);
+                                if(movingPiece != null && (whiteMove && square.getPiece().getColor() == "white" || !whiteMove && square.getPiece().getColor() == "black")) {
+                                    possibleMoves = movingPiece.possibleMoves(squares);
+                                } else {
+                                    movingPiece = null;
+                                }
                                 for(Square s: possibleMoves) {
                                     System.out.println(s.getRow() + " " + s.getColumn());
                                 }
                             } else {
-                                if(possibleMoves.contains(square)) {
+                                if(!possibleMoves.isEmpty() && possibleMoves.contains(square)) {
                                     System.out.println("Igen");
-                                    if(square.getPiece() != null) {
-                                        square.removeAll();
-                                        square.setPiece(null);
-                                    }
-
                                     Square oldSquare = movingPiece.getPosition();
-                                    oldSquare.setPiece(null);
-                                    oldSquare.removeAll(); //Removing the piece picture
+                                    if(oldSquare != square) {
+                                        if(square.getPiece() != null) {
+                                            square.removeAll();
+                                            square.setPiece(null);
+                                        }
 
-                                    square.setPiece(movingPiece); //Set square that the piece is on it
-                                    movingPiece.setPosition(square);
-                                    setPictureOfPiece(movingPiece); //Set the picture of the piece
+                                        oldSquare.setPiece(null);
+                                        oldSquare.removeAll(); //Removing the piece picture
 
-                                    square.revalidate(); //To show the picture of piece, refresh label
-                                    oldSquare.repaint();
+                                        square.setPiece(movingPiece); //Set square that the piece is on it
+                                        movingPiece.setPosition(square);
+                                        setPictureOfPiece(movingPiece); //Set the picture of the piece
+
+                                        square.revalidate(); //To show the picture of piece, refresh label
+                                        oldSquare.repaint();
+                                        if(whiteMove) whiteMove = false;
+                                        else whiteMove = true;
+                                    }
                                 }
                                 possibleMoves.clear();
                                 movingPiece = null;

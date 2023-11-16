@@ -16,8 +16,6 @@ public class Bishop extends Piece {
         int x = getPosition().getRow();
         int y = getPosition().getColumn();
 
-        System.out.println("x= " + x + " y= " + y);
-
         if(x >= 2 && y >= 1) {
             if(squares[x - 2][y - 1].getPiece() == null) possibleMoves.add(squares[x - 2][y - 1]);
             else if(!squares[x - 2][y - 1].getPiece().getColor().equals(getColor())) possibleMoves.add(squares[x - 2][y - 1]);

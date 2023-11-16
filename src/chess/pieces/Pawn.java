@@ -16,7 +16,7 @@ public class Pawn extends Piece {
         super(color);
         this.changed = false;
         this.changedTo = null;
-        this.moveDirection = color == "white" ? "up" : "down"; //If pawn is color white, it moves up, it its black it moves down
+        this.moveDirection = color == "white" ? "up" : "down"; //If pawn is color white, it PieceMoves up, it its black it PieceMoves down
         this.movedBefore = false;
     }
 

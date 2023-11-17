@@ -1,10 +1,13 @@
 package chess;
 
+import chess.moves.Move;
 import chess.pieces.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -17,24 +20,37 @@ public class Board extends JFrame {
     public Square squares[][] = new Square[8][8];
     private PieceSet[] pieceSets = new PieceSet[2];
     private List<Square> possibleMoves = new ArrayList<>();
+    private List<Move> movesList = new ArrayList<>();
     private Piece movingPiece = null;
     private Image onePiecePicture[] = new Image[12]; //Stores the pictures if single pieces
+    private JLabel[] lastFiveMoves = new JLabel[5];
+    private JButton backButton = new JButton("Vissza!");
     private boolean whiteMove = true;
 
     public void create() {
-        setBounds(8, 8, 640, 640);
+        setBounds(8, 8, 800, 880);
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(8, 8));
+        setLayout(new GridLayout(9, 8));
 
         createBoard(); //Create board
         addPiecesToBoard(); //Add peaces to board
+
+        add(new JLabel("Utolsó 5 lépés:", SwingConstants.CENTER));
+
+        for (int i = 0; i < 5; i++) {
+            lastFiveMoves[i] = new JLabel("-", SwingConstants.CENTER);
+            add(lastFiveMoves[i]);
+        }
+
+        add(backButton);
+        backButtonClickEvent(backButton);
 
         //Set pictures of pieces
         BufferedImage allPieces = null;
         try {
             //All pieces are on this picture
-            allPieces = ImageIO.read(new File(System.getProperty("user.dir") + "/pieces/pieces.png"));
+            allPieces = ImageIO.read(new File(System.getProperty("user.dir") + "/pictures/pieces.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -54,22 +70,30 @@ public class Board extends JFrame {
                 setPictureOfPiece(p);
             }
         }
+        pack();
         setVisible(true);
     }
 
     private void setPictureOfPiece(Piece piece) {
-        if(piece.getClass() == King.class)
-            piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 0 : 6])));
-        if(piece.getClass() == Queen.class)
-            piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 1 : 7])));
-        if(piece.getClass() == Knight.class)
-            piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 2 : 8])));
-        if(piece.getClass() == Bishop.class)
-            piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 3 : 9])));
-        if(piece.getClass() == Rook.class)
-            piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 4 : 10])));
-        if(piece.getClass() == Pawn.class)
-            piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 5 : 11])));
+        if(piece.getClass() == King.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 0 : 6])));
+        if(piece.getClass() == Queen.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 1 : 7])));
+        if(piece.getClass() == Knight.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 2 : 8])));
+        if(piece.getClass() == Bishop.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 3 : 9])));
+        if(piece.getClass() == Rook.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 4 : 10])));
+        if(piece.getClass() == Pawn.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 5 : 11])));
+    }
+
+    private void setLastFiveMovesText(List<Move> moves) {
+        if(!moves.isEmpty()) {
+            int j = 0;
+            int i = moves.size() - 1;
+            while(i >= 0 && j < 5) {
+                lastFiveMoves[j++].setText(moves.get(i).getFromSquare().toString() + " -> " + moves.get(i--).getToSquare().toString());
+            }
+            while(j < 5) lastFiveMoves[j++].setText("-");
+        } else {
+            for (int i = 0; i < 5; i++) lastFiveMoves[i].setText("-");
+        }
     }
 
     //Adding peaces to chessboard
@@ -125,51 +149,93 @@ public class Board extends JFrame {
                 if((i % 2 == 0 && j % 2 == 0) || (i % 2 == 1 && j % 2 == 1)) square.setBackground(Color.WHITE);
                 else square.setBackground(Color.GRAY);
                 square.setVisible(true);
-                square.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        if(square != null) {
-                            if(movingPiece == null) {
-                                movingPiece = square.getPiece();
-                                if(movingPiece != null && (whiteMove && square.getPiece().getColor() == "white" || !whiteMove && square.getPiece().getColor() == "black")) {
-                                    possibleMoves = movingPiece.possibleMoves(squares);
-                                } else {
-                                    movingPiece = null;
-                                }
-                                for(Square s: possibleMoves) {
-                                    System.out.println(s.getRow() + " " + s.getColumn());
-                                }
-                            } else {
-                                if(!possibleMoves.isEmpty() && possibleMoves.contains(square)) {
-                                    System.out.println("Igen");
-                                    Square oldSquare = movingPiece.getPosition();
-                                    if(oldSquare != square) {
-                                        if(square.getPiece() != null) {
-                                            square.removeAll();
-                                            square.setPiece(null);
-                                        }
+                mouseClick(square);
+                add(squares[i][j]);
+            }
+        }
+    }
 
-                                        oldSquare.setPiece(null);
-                                        oldSquare.removeAll(); //Removing the piece picture
+    private void mouseClick(Square square) {
+        square.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pieceMove(square);
+            }
+        });
+    }
 
-                                        square.setPiece(movingPiece); //Set square that the piece is on it
-                                        movingPiece.setPosition(square);
-                                        setPictureOfPiece(movingPiece); //Set the picture of the piece
+    private void backButtonClickEvent(JButton backButton) {
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Vissza!");
+                Square fromSquare = movesList.get(movesList.size() - 1).getToSquare();
+                Square toSquare = movesList.get(movesList.size() - 1).getFromSquare();
 
-                                        square.revalidate(); //To show the picture of piece, refresh label
-                                        oldSquare.repaint();
-                                        if(whiteMove) whiteMove = false;
-                                        else whiteMove = true;
-                                    }
-                                }
-                                possibleMoves.clear();
-                                movingPiece = null;
-                                System.out.println("vege");
+                Piece fromPiece = fromSquare.getPiece();
+
+                toSquare.setPiece(fromPiece);
+                fromPiece.setPosition(toSquare);
+
+                fromSquare.removeAll();
+                fromSquare.repaint();
+                setPictureOfPiece(toSquare.getPiece());
+                toSquare.revalidate();
+
+                movesList.remove(movesList.size() - 1);
+                setLastFiveMovesText(movesList);
+                if(whiteMove) whiteMove = false;
+                else whiteMove = true;
+            }
+        });
+    }
+
+    private void pieceMove(Square square) {
+        if(square != null) {
+            if(movingPiece == null) {
+                movingPiece = square.getPiece();
+                if(movingPiece != null && (whiteMove && square.getPiece().getColor() == "white" || !whiteMove && square.getPiece().getColor() == "black")) {
+                    possibleMoves = movingPiece.possibleMoves(squares);
+                } else {
+                    movingPiece = null;
+                }
+                for(Square s: possibleMoves) {
+                    if(s.getPiece() == null) s.setBackground(Color.GREEN);
+                    else s.setBackground(Color.RED);
+                    s.revalidate();
+                }
+            } else {
+                if(!possibleMoves.isEmpty()) {
+                    Square oldSquare = movingPiece.getPosition();
+                    if(oldSquare != square) {
+                        if(possibleMoves.contains(square)) {
+                            movesList.add(new Move(movingPiece.getPosition(), square));
+                            if(square.getPiece() != null) {
+                                square.removeAll();
+                                square.setPiece(null);
                             }
+
+                            oldSquare.setPiece(null); //Removing the piece
+                            oldSquare.removeAll(); //Removing the piece picture
+
+                            square.setPiece(movingPiece); //Set square that the piece is on it
+                            movingPiece.setPosition(square);
+                            setPictureOfPiece(movingPiece); //Set the picture of the piece
+
+                            square.revalidate(); //To show the picture of piece, refresh label
+                            oldSquare.repaint();
+                            if(whiteMove) whiteMove = false;
+                            else whiteMove = true;
                         }
                     }
-                });
-                add(squares[i][j]);
+                }
+                for(Square s: possibleMoves) {
+                    if(s.getRow() % 2 == 0 && s.getColumn() % 2 == 0 || s.getRow() % 2 == 1 && s.getColumn() % 2 == 1) s.setBackground(Color.WHITE);
+                    else s.setBackground(Color.GRAY);
+                }
+                setLastFiveMovesText(movesList);
+                possibleMoves.clear();
+                movingPiece = null;
             }
         }
     }

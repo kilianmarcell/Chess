@@ -168,24 +168,43 @@ public class Board extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Vissza!");
-                Square fromSquare = movesList.get(movesList.size() - 1).getToSquare();
-                Square toSquare = movesList.get(movesList.size() - 1).getFromSquare();
+                if(!movesList.isEmpty()) {
+                    Square fromSquare = movesList.get(movesList.size() - 1).getToSquare();
+                    Square toSquare = movesList.get(movesList.size() - 1).getFromSquare();
 
-                Piece fromPiece = fromSquare.getPiece();
+                    if(movesList.get(movesList.size() - 1).getKickedPiece() == null) {
+                        Piece fromPiece = fromSquare.getPiece();
 
-                toSquare.setPiece(fromPiece);
-                fromPiece.setPosition(toSquare);
+                        toSquare.setPiece(fromPiece);
+                        fromPiece.setPosition(toSquare);
 
-                fromSquare.removeAll();
-                fromSquare.repaint();
-                setPictureOfPiece(toSquare.getPiece());
-                toSquare.revalidate();
+                        fromSquare.setPiece(null);
+                        fromSquare.removeAll();
+                        fromSquare.repaint();
+                        setPictureOfPiece(toSquare.getPiece());
+                        toSquare.revalidate();
+                    } else {
+                        Piece fromPiece = fromSquare.getPiece();
 
-                movesList.remove(movesList.size() - 1);
-                setLastFiveMovesText(movesList);
-                if(whiteMove) whiteMove = false;
-                else whiteMove = true;
+                        toSquare.setPiece(fromPiece);
+                        fromPiece.setPosition(toSquare);
+
+                        fromSquare.setPiece(null);
+                        fromSquare.removeAll();
+                        fromSquare.setPiece(movesList.get(movesList.size() - 1).getKickedPiece());
+                        movesList.get(movesList.size() - 1).getKickedPiece().setPosition(fromSquare);
+                        setPictureOfPiece(fromSquare.getPiece());
+
+                        fromSquare.repaint();
+                        setPictureOfPiece(toSquare.getPiece());
+                        toSquare.revalidate();
+                    }
+
+                    movesList.remove(movesList.size() - 1);
+                    setLastFiveMovesText(movesList);
+                    if(whiteMove) whiteMove = false;
+                    else whiteMove = true;
+                }
             }
         });
     }
@@ -209,10 +228,12 @@ public class Board extends JFrame {
                     Square oldSquare = movingPiece.getPosition();
                     if(oldSquare != square) {
                         if(possibleMoves.contains(square)) {
-                            movesList.add(new Move(movingPiece.getPosition(), square));
                             if(square.getPiece() != null) {
+                                movesList.add(new Move(movingPiece.getPosition(), square, square.getPiece()));
                                 square.removeAll();
                                 square.setPiece(null);
+                            } else {
+                                movesList.add(new Move(movingPiece.getPosition(), square));
                             }
 
                             oldSquare.setPiece(null); //Removing the piece

@@ -27,7 +27,7 @@ public class Board extends JFrame {
     private JButton backButton = new JButton("Vissza!");
     private boolean whiteMove = true;
 
-    public void create() {
+    public void create(boolean isRobot) {
         setBounds(8, 8, 800, 880);
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

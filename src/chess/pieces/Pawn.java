@@ -17,7 +17,6 @@ public class Pawn extends Piece {
         this.changed = false;
         this.changedTo = null;
         this.moveDirection = color == "white" ? "up" : "down"; //If pawn is color white, it PieceMoves up, it its black it PieceMoves down
-        this.movedBefore = false;
     }
 
     public List<Square> possibleMoves(Square squares[][]) {
@@ -28,7 +27,7 @@ public class Pawn extends Piece {
         if(moveDirection == "up") {
             if(x > 0) {
                 if(squares[x - 1][y].getPiece() == null) possibleMoves.add(squares[x - 1][y]);
-                if(x == 6 && !movedBefore && squares[x - 2][y].getPiece() == null) possibleMoves.add(squares[x - 2][y]);
+                if(x == 6 && squares[x - 2][y].getPiece() == null) possibleMoves.add(squares[x - 2][y]);
                 if(y > 0) {
                     if(squares[x - 1][y - 1].getPiece() != null && !squares[x - 1][y - 1].getPiece().getColor().equals(getColor())) {
                         possibleMoves.add(squares[x - 1][y - 1]);

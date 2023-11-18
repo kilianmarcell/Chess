@@ -168,6 +168,10 @@ public class Board extends JFrame {
 
     private void oneMoveBack() {
         if(!movesList.isEmpty()) {
+            for(Square s: possibleMoves) {
+                if(s.getRow() % 2 == 0 && s.getColumn() % 2 == 0 || s.getRow() % 2 == 1 && s.getColumn() % 2 == 1) s.setBackground(Color.WHITE);
+                else s.setBackground(Color.GRAY);
+            }
             Square fromSquare = movesList.get(movesList.size() - 1).getToSquare();
             Square toSquare = movesList.get(movesList.size() - 1).getFromSquare();
 
@@ -221,6 +225,7 @@ public class Board extends JFrame {
                 movingPiece = square.getPiece();
                 if(movingPiece != null && (whiteMove && square.getPiece().getColor() == "white" || !whiteMove && square.getPiece().getColor() == "black")) {
                     possibleMoves = movingPiece.possibleMoves(squares);
+                    for (int i = 0; i < possibleMoves.size(); i++) if(whatIfPieceWasThere(movingPiece, possibleMoves.get(i))) possibleMoves.remove(i--);
                 } else {
                     movingPiece = null;
                 }
@@ -266,6 +271,21 @@ public class Board extends JFrame {
                 movingPiece = null;
             }
         }
+    }
+
+    private boolean whatIfPieceWasThere(Piece piece, Square moveToS) {
+        boolean wouldBeCheck = false;
+        Piece moveToP = moveToS.getPiece(); //Stores the piece where the moving piece goes
+        Square moveFromS = piece.getPosition();
+        moveToS.setPiece(piece);
+        piece.setPosition(moveToS);
+        moveFromS.setPiece(null);
+        if(checkCheck(squares, whiteMove ? pieceSets[0].getPiece(8) : pieceSets[1].getPiece(8))) wouldBeCheck = true;
+        moveToS.setPiece(moveToP);
+        piece.setPosition(moveFromS);
+        moveFromS.setPiece(piece);
+
+        return wouldBeCheck;
     }
 
     public Square getSquare(int row, int column) {

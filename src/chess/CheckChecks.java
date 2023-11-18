@@ -7,7 +7,6 @@ import chess.pieces.Rook;
 public class CheckChecks {
     //Check if white or black king is in check
     public static boolean checkCheck(Square squares[][], Piece king) {
-        System.out.println(king.getPosition());
         if(diagonalCheck(squares, king)) {
             System.out.println("Sakkban lennél diagonal " + king.getColor());
             return true;

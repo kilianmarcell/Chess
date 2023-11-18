@@ -22,4 +22,8 @@ public class PieceSet {
     public List<Piece> getPieces() {
         return pieces;
     }
+
+    public Piece getPiece(int i) {
+        return pieces.get(i);
+    }
 }

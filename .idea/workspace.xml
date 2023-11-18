@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="Moves back implemented, tested✔">
-      <change afterPath="$PROJECT_DIR$/src/chess/CheckChecks.java" afterDir="false" />
+    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="Check if check method implemented&#10;TODO: use it in game">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chess/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/pieces/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/pieces/King.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/pieces/Pawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/pieces/Pawn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/pieces/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/pieces/Rook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chess/CheckChecks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/CheckChecks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chess/PieceSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/PieceSet.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +101,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700223776324</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Check if check method implemented&#10;TODO: use it in game">
+      <option name="closed" value="true" />
+      <created>1700236271917</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1700236271917</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -126,7 +131,8 @@
     <MESSAGE value="Pieces movement implemented + tested✔" />
     <MESSAGE value="Moves list started" />
     <MESSAGE value="Moves back implemented, tested✔" />
-    <option name="LAST_COMMIT_MESSAGE" value="Moves back implemented, tested✔" />
+    <MESSAGE value="Check if check method implemented&#10;TODO: use it in game" />
+    <option name="LAST_COMMIT_MESSAGE" value="Check if check method implemented&#10;TODO: use it in game" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

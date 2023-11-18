@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static chess.CheckChecks.checkCheck;
+
 public class Board extends JFrame {
     public Square squares[][] = new Square[8][8];
     private PieceSet[] pieceSets = new PieceSet[2];
@@ -164,47 +166,51 @@ public class Board extends JFrame {
         });
     }
 
+    private void oneMoveBack() {
+        if(!movesList.isEmpty()) {
+            Square fromSquare = movesList.get(movesList.size() - 1).getToSquare();
+            Square toSquare = movesList.get(movesList.size() - 1).getFromSquare();
+
+            if(movesList.get(movesList.size() - 1).getKickedPiece() == null) {
+                Piece fromPiece = fromSquare.getPiece();
+
+                toSquare.setPiece(fromPiece);
+                fromPiece.setPosition(toSquare);
+
+                fromSquare.setPiece(null);
+                fromSquare.removeAll();
+                fromSquare.repaint();
+                setPictureOfPiece(toSquare.getPiece());
+                toSquare.revalidate();
+            } else {
+                Piece fromPiece = fromSquare.getPiece();
+
+                toSquare.setPiece(fromPiece);
+                fromPiece.setPosition(toSquare);
+
+                fromSquare.setPiece(null);
+                fromSquare.removeAll();
+                fromSquare.setPiece(movesList.get(movesList.size() - 1).getKickedPiece());
+                movesList.get(movesList.size() - 1).getKickedPiece().setPosition(fromSquare);
+                setPictureOfPiece(fromSquare.getPiece());
+
+                fromSquare.repaint();
+                setPictureOfPiece(toSquare.getPiece());
+                toSquare.revalidate();
+            }
+
+            movesList.remove(movesList.size() - 1);
+            setLastFiveMovesText(movesList);
+            if(whiteMove) whiteMove = false;
+            else whiteMove = true;
+        }
+    }
+
     private void backButtonClickEvent(JButton backButton) {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!movesList.isEmpty()) {
-                    Square fromSquare = movesList.get(movesList.size() - 1).getToSquare();
-                    Square toSquare = movesList.get(movesList.size() - 1).getFromSquare();
-
-                    if(movesList.get(movesList.size() - 1).getKickedPiece() == null) {
-                        Piece fromPiece = fromSquare.getPiece();
-
-                        toSquare.setPiece(fromPiece);
-                        fromPiece.setPosition(toSquare);
-
-                        fromSquare.setPiece(null);
-                        fromSquare.removeAll();
-                        fromSquare.repaint();
-                        setPictureOfPiece(toSquare.getPiece());
-                        toSquare.revalidate();
-                    } else {
-                        Piece fromPiece = fromSquare.getPiece();
-
-                        toSquare.setPiece(fromPiece);
-                        fromPiece.setPosition(toSquare);
-
-                        fromSquare.setPiece(null);
-                        fromSquare.removeAll();
-                        fromSquare.setPiece(movesList.get(movesList.size() - 1).getKickedPiece());
-                        movesList.get(movesList.size() - 1).getKickedPiece().setPosition(fromSquare);
-                        setPictureOfPiece(fromSquare.getPiece());
-
-                        fromSquare.repaint();
-                        setPictureOfPiece(toSquare.getPiece());
-                        toSquare.revalidate();
-                    }
-
-                    movesList.remove(movesList.size() - 1);
-                    setLastFiveMovesText(movesList);
-                    if(whiteMove) whiteMove = false;
-                    else whiteMove = true;
-                }
+                oneMoveBack();
             }
         });
     }
@@ -255,6 +261,7 @@ public class Board extends JFrame {
                     else s.setBackground(Color.GRAY);
                 }
                 setLastFiveMovesText(movesList);
+                if(checkCheck(squares, whiteMove ? pieceSets[1].getPiece(8) : pieceSets[0].getPiece(8))) oneMoveBack();
                 possibleMoves.clear();
                 movingPiece = null;
             }

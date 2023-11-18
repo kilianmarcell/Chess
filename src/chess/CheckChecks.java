@@ -1,73 +1,98 @@
 package chess;
 
+import chess.pieces.Knight;
+import chess.pieces.Queen;
+import chess.pieces.Rook;
+
 public class CheckChecks {
     //Check if white or black king is in check
     public static boolean checkCheck(Square squares[][], Piece king) {
-        if(diagonalCheck(squares, king)) return true;
-        if(straightCheck(squares, king)) return true;
+        System.out.println(king.getPosition());
+        if(diagonalCheck(squares, king)) {
+            System.out.println("Sakkban lennél diagonal " + king.getColor());
+            return true;
+        }
+        if(straightCheck(squares, king)) {
+            System.out.println("Sakkban lennél straight " + king.getColor());
+            return true;
+        }
         return false;
     }
 
     public static boolean straightCheck(Square squares[][], Piece king) {
-        int x = king.getPosition().getRow();
-        int y = king.getPosition().getColumn();
+        int xHelp = king.getPosition().getRow();
+        int yHelp = king.getPosition().getColumn();
+        String color = king.getColor();
+        int x = xHelp;
+        int y = yHelp;
 
         //Moving vertically
         while(--x >= 0) {
-            if(!squares[x][y].getPiece().getColor().equals(king.getColor())) return true;
-            else if(squares[x][y].getPiece().getColor().equals(king.getColor())) x = 0;
+            Piece helpPiece = squares[x][y].getPiece();
+            if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Rook.class)) return true;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
         }
-        x = king.getPosition().getRow();
+        x = xHelp;
         while(++x <= 7) {
-            if(!squares[x][y].getPiece().getColor().equals(king.getColor())) return true;
-            else if(squares[x][y].getPiece().getColor().equals(king.getColor())) x = 7;
+            Piece helpPiece = squares[x][y].getPiece();
+            if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Rook.class)) return true;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 7;
         }
-        x = king.getPosition().getRow();
+        x = xHelp;
 
         //Moving horizontally
         while(--y >= 0) {
-            if(!squares[x][y].getPiece().getColor().equals(king.getColor())) return true;
-            else if(squares[x][y].getPiece().getColor().equals(king.getColor())) y = 0;
+            Piece helpPiece = squares[x][y].getPiece();
+            if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Rook.class)) return true;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) y = 0;
         }
-        y = king.getPosition().getColumn();
+        y = yHelp;
         while(++y <= 7) {
-            if(!squares[x][y].getPiece().getColor().equals(king.getColor())) return true;
-            else if(squares[x][y].getPiece().getColor().equals(king.getColor())) y = 7;
+            Piece helpPiece = squares[x][y].getPiece();
+            if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Rook.class)) return true;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) y = 7;
         }
         return false;
     }
     public static boolean diagonalCheck(Square squares[][], Piece king) {
-        int x = king.getPosition().getRow();
-        int y = king.getPosition().getColumn();
+        int xHelp = king.getPosition().getRow();
+        int yHelp = king.getPosition().getColumn();
+        String color = king.getColor();
+        int x = xHelp;
+        int y = yHelp;
 
         //Moving left up on board
         while(--x >= 0 && --y >= 0) {
-            if(!squares[x][y].getPiece().getColor().equals(king.getColor())) return true;
-            else if(squares[x][y].getPiece().getColor().equals(king.getColor())) x = 0;
+            Piece helpPiece = squares[x][y].getPiece();
+            if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
         }
-        x = king.getPosition().getRow();
-        y = king.getPosition().getColumn();
+        x = xHelp;
+        y = yHelp;
 
         //Moving left down on board
         while(++x <= 7 && --y >= 0) {
-            if(!squares[x][y].getPiece().getColor().equals(king.getColor())) return true;
-            else if(squares[x][y].getPiece().getColor().equals(king.getColor())) x = 0;
+            Piece helpPiece = squares[x][y].getPiece();
+            if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
         }
-        x = king.getPosition().getRow();
-        y = king.getPosition().getColumn();
+        x = xHelp;
+        y = yHelp;
 
         //Moving right up on board
         while(--x >= 0 && ++y <= 7) {
-            if(!squares[x][y].getPiece().getColor().equals(king.getColor())) return true;
-            else if(squares[x][y].getPiece().getColor().equals(king.getColor())) x = 0;
+            Piece helpPiece = squares[x][y].getPiece();
+            if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
         }
-        x = king.getPosition().getRow();
-        y = king.getPosition().getColumn();
+        x = xHelp;
+        y = yHelp;
 
         //Moving right down on board
         while(++x <= 7 && ++y <= 7) {
-            if(!squares[x][y].getPiece().getColor().equals(king.getColor())) return true;
-            else if(squares[x][y].getPiece().getColor().equals(king.getColor())) x = 0;
+            Piece helpPiece = squares[x][y].getPiece();
+            if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
         }
         return false;
     }

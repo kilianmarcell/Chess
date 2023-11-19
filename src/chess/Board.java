@@ -26,7 +26,7 @@ public class Board extends JFrame {
     private Piece movingPiece = null;
     private Image onePiecePicture[] = new Image[12]; //Stores the pictures if single pieces
     private JLabel[] lastFiveMoves = new JLabel[5];
-    private JButton backButton = new JButton("Vissza!");
+    private JButton backButton = new JButton("Vissza");
     private boolean whiteMove = true;
 
     public void create(boolean isRobot) {
@@ -225,6 +225,7 @@ public class Board extends JFrame {
                 movingPiece = square.getPiece();
                 if(movingPiece != null && (whiteMove && square.getPiece().getColor() == "white" || !whiteMove && square.getPiece().getColor() == "black")) {
                     possibleMoves = movingPiece.possibleMoves(squares);
+                    checkCastling();
                     for (int i = 0; i < possibleMoves.size(); i++) if(whatIfPieceWasThere(movingPiece, possibleMoves.get(i))) possibleMoves.remove(i--);
                 } else {
                     movingPiece = null;
@@ -243,6 +244,7 @@ public class Board extends JFrame {
                                 movesList.add(new Move(movingPiece.getPosition(), square, square.getPiece()));
                                 square.removeAll();
                                 square.setPiece(null);
+                                //TODO: Castling
                             } else {
                                 movesList.add(new Move(movingPiece.getPosition(), square));
                             }
@@ -266,11 +268,48 @@ public class Board extends JFrame {
                     else s.setBackground(Color.GRAY);
                 }
                 setLastFiveMovesText(movesList);
-                if(checkCheck(squares, whiteMove ? pieceSets[1].getPiece(8) : pieceSets[0].getPiece(8))) oneMoveBack();
+                if(checkCheck(squares, whiteMove ? pieceSets[0].getPiece(8) : pieceSets[1].getPiece(8))) System.out.println("Sakk!");
                 possibleMoves.clear();
                 movingPiece = null;
             }
         }
+    }
+
+    private void checkCastling() {
+        if(movingPiece.getClass() == King.class) { //Check castling
+            if(movingPiece.getColor().equals("white") && movingPiece.getPosition() == squares[7][4]) {
+                boolean canCastleRight = true;
+                boolean canCastleLeft = true;
+                for(Move m : movesList) {
+                    if(m.getFromSquare() == squares[7][4] || m.getFromSquare() == squares[7][7]) canCastleRight = false;
+                    if(m.getFromSquare() == squares[7][4] || m.getFromSquare() == squares[7][0]) canCastleLeft = false;
+                }
+                if(squares[7][7].getPiece().getClass() == Rook.class && squares[7][7].getPiece().getColor().equals("white") && canCastleRight && squares[7][5].getPiece() == null && squares[7][6].getPiece() == null) possibleMoves.add(squares[7][6]);
+                if(squares[7][0].getPiece().getClass() == Rook.class && squares[7][0].getPiece().getColor().equals("white") && canCastleLeft && squares[7][1].getPiece() == null && squares[7][2].getPiece() == null && squares[7][3].getPiece() == null) possibleMoves.add(squares[7][2]);
+            }
+            if(movingPiece.getColor().equals("black") && movingPiece.getPosition() == squares[0][4]) {
+                for(Move m : movesList) {
+                    if(m.getFromSquare() == squares[0][4] || m.getFromSquare() == squares[0][0] || m.getFromSquare() == squares[0][7]) {
+                        if(squares[0][5].getPiece() == null && squares[0][6].getPiece() == null) possibleMoves.add(squares[0][6]);
+                        if(squares[0][1].getPiece() == null && squares[0][2].getPiece() == null && squares[0][3].getPiece() == null) possibleMoves.add(squares[0][2]);
+                    }
+                }
+            }
+            if(movingPiece.getColor().equals("black") && movingPiece.getPosition() == squares[0][4]) {
+                boolean canCastleRight = true;
+                boolean canCastleLeft = true;
+                for(Move m : movesList) {
+                    if(m.getFromSquare() == squares[0][4] || m.getFromSquare() == squares[0][7]) canCastleRight = false;
+                    if(m.getFromSquare() == squares[0][4] || m.getFromSquare() == squares[0][0]) canCastleLeft = false;
+                }
+                if(squares[0][7].getPiece().getClass() == Rook.class && squares[0][7].getPiece().getColor().equals("black") && canCastleRight && squares[0][5].getPiece() == null && squares[0][6].getPiece() == null) possibleMoves.add(squares[0][6]);
+                if(squares[0][0].getPiece().getClass() == Rook.class && squares[0][0].getPiece().getColor().equals("black") && canCastleLeft && squares[0][1].getPiece() == null && squares[0][2].getPiece() == null && squares[0][3].getPiece() == null) possibleMoves.add(squares[0][2]);
+            }
+        }
+    }
+
+    private void castlingMove() {
+
     }
 
     private boolean whatIfPieceWasThere(Piece piece, Square moveToS) {

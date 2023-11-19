@@ -7,14 +7,8 @@ import chess.pieces.Rook;
 public class CheckChecks {
     //Check if white or black king is in check
     public static boolean checkCheck(Square squares[][], Piece king) {
-        if(diagonalCheck(squares, king)) {
-            System.out.println("Sakkban lennél diagonal " + king.getColor());
-            return true;
-        }
-        if(straightCheck(squares, king)) {
-            System.out.println("Sakkban lennél straight " + king.getColor());
-            return true;
-        }
+        if(diagonalCheck(squares, king)) return true;
+        if(straightCheck(squares, king)) return true;
         return false;
     }
 

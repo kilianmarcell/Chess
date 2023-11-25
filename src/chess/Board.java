@@ -256,7 +256,7 @@ public class Board extends JFrame {
                     possibleMoves = movingPiece.possibleMoves(squares);
                     checkCastling();
                     checkEnPassant();
-                    for (int i = 0; i < possibleMoves.size(); i++) if(whatIfPieceWasThere(movingPiece, possibleMoves.get(i))) possibleMoves.remove(i--);
+                    for(int i = 0; i < possibleMoves.size(); i++) if(whatIfPieceWasThere(movingPiece, possibleMoves.get(i))) possibleMoves.remove(i--);
                 } else {
                     movingPiece = null;
                 }
@@ -304,7 +304,10 @@ public class Board extends JFrame {
                     else s.setBackground(Color.GRAY);
                 }
                 setLastFiveMovesText(movesList);
-                if(checkCheck(squares, whiteMove ? pieceSets[0].getPiece(8) : pieceSets[1].getPiece(8))) System.out.println("Sakk!");
+                if(checkCheck(squares, whiteMove ? pieceSets[0].getPiece(8) : pieceSets[1].getPiece(8))) {
+                    if(checkCheckMate()) System.out.println("Sakk matt!");
+                    else System.out.println("Sakk!");
+                }
                 possibleMoves.clear();
                 movingPiece = null;
             }
@@ -448,14 +451,29 @@ public class Board extends JFrame {
         }
     }
 
+    private boolean checkCheckMate() { //Checks check mate
+        int helpWhite = whiteMove ? 0 : 1;
+        List<Piece> pieceListHelp = pieceSets[helpWhite].getPieces();
+        for(Piece p : pieceListHelp) {
+            if(squares[p.getPosition().getRow()][p.getPosition().getColumn()].getPiece() == p) {
+                List<Square> possibleMovesHelp = p.possibleMoves(squares);
+                for(int i = 0; i < possibleMovesHelp.size(); i++) if(whatIfPieceWasThere(p, possibleMovesHelp.get(i))) possibleMovesHelp.remove(i--);
+                if(possibleMovesHelp.size() != 0) return false;
+            }
+        }
+        return true;
+    }
+
     private boolean whatIfPieceWasThere(Piece piece, Square moveToS) {
         boolean wouldBeCheck = false;
         Piece moveToP = moveToS.getPiece(); //Stores the piece where the moving piece goes
         Square moveFromS = piece.getPosition();
+
         moveToS.setPiece(piece);
         piece.setPosition(moveToS);
         moveFromS.setPiece(null);
         if(checkCheck(squares, whiteMove ? pieceSets[0].getPiece(8) : pieceSets[1].getPiece(8))) wouldBeCheck = true;
+
         moveToS.setPiece(moveToP);
         piece.setPosition(moveFromS);
         moveFromS.setPiece(piece);

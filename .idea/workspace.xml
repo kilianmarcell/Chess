@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="Castling implemented&#10;Tested✔">
+    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="En passant implemented">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chess/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/Board.java" afterDir="false" />
     </list>
@@ -139,7 +139,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700907012301</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="En passant implemented">
+      <option name="closed" value="true" />
+      <created>1700916290177</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1700916290177</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -166,7 +174,8 @@
     <MESSAGE value="Only valid moves shows up during game" />
     <MESSAGE value="Castling started" />
     <MESSAGE value="Castling implemented&#10;Tested✔" />
-    <option name="LAST_COMMIT_MESSAGE" value="Castling implemented&#10;Tested✔" />
+    <MESSAGE value="En passant implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="En passant implemented" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

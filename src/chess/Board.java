@@ -29,6 +29,7 @@ public class Board extends JFrame {
     private JButton backButton = new JButton("Vissza");
     private boolean whiteMove = true;
     private boolean isCastling = false;
+    private boolean isEnPassant = false;
 
     public void create(boolean isRobot) {
         setBounds(8, 8, 800, 880);
@@ -204,12 +205,33 @@ public class Board extends JFrame {
                 fromSquare.repaint();
                 setPictureOfPiece(toSquare.getPiece());
                 toSquare.revalidate();
+                if(movesList.get(movesList.size() - 1).getKickedPiece().getClass() == Pawn.class) { //En passant
+                    if((movesList.get(movesList.size() - 2).getFromSquare().getRow() + 2) == movesList.get(movesList.size() - 2).getToSquare().getRow()) {
+                        squares[fromSquare.getRow() + 1][fromSquare.getColumn()].setPiece(movesList.get(movesList.size() - 1).getKickedPiece());
+                        movesList.get(movesList.size() - 1).getKickedPiece().setPosition(squares[fromSquare.getRow() + 1][fromSquare.getColumn()]);
+                        setPictureOfPiece(movesList.get(movesList.size() - 1).getKickedPiece());
+                        fromSquare.setPiece(null);
+                        fromSquare.removeAll();
+                        setPictureOfPiece(movesList.get(movesList.size() - 1).getKickedPiece());
+                        fromSquare.repaint();
+                        squares[fromSquare.getRow() + 1][fromSquare.getColumn()].revalidate();
+                    } else if((movesList.get(movesList.size() - 2).getFromSquare().getRow() - 2) == movesList.get(movesList.size() - 2).getToSquare().getRow()) {
+                        squares[fromSquare.getRow() - 1][fromSquare.getColumn()].setPiece(movesList.get(movesList.size() - 1).getKickedPiece());
+                        movesList.get(movesList.size() - 1).getKickedPiece().setPosition(squares[fromSquare.getRow() - 1][fromSquare.getColumn()]);
+                        setPictureOfPiece(movesList.get(movesList.size() - 1).getKickedPiece());
+                        fromSquare.setPiece(null);
+                        fromSquare.removeAll();
+                        setPictureOfPiece(movesList.get(movesList.size() - 1).getKickedPiece());
+                        fromSquare.repaint();
+                        squares[fromSquare.getRow() - 1][fromSquare.getColumn()].revalidate();
+                    }
+                }
             }
 
             movesList.remove(movesList.size() - 1);
             setLastFiveMovesText(movesList);
             if(!movesList.isEmpty() && movesList.get(movesList.size() - 1).getToSquare().getPiece() != null && movesList.get(movesList.size() - 1).getToSquare().getPiece().getColor().equals(fromSquareColor)) {
-                oneMoveBack();
+                oneMoveBack(); //For castling we need to hit the back button once
             } else {
                 if(whiteMove) whiteMove = false;
                 else whiteMove = true;
@@ -233,6 +255,7 @@ public class Board extends JFrame {
                 if(movingPiece != null && (whiteMove && square.getPiece().getColor() == "white" || !whiteMove && square.getPiece().getColor() == "black")) {
                     possibleMoves = movingPiece.possibleMoves(squares);
                     checkCastling();
+                    checkEnPassant();
                     for (int i = 0; i < possibleMoves.size(); i++) if(whatIfPieceWasThere(movingPiece, possibleMoves.get(i))) possibleMoves.remove(i--);
                 } else {
                     movingPiece = null;
@@ -241,6 +264,9 @@ public class Board extends JFrame {
                     if(s.getPiece() == null) s.setBackground(Color.GREEN);
                     else s.setBackground(Color.RED);
                     s.revalidate();
+                }
+                if(!possibleMoves.isEmpty() && isEnPassant) {
+                    if((whiteMove && movingPiece.getPosition().getRow() == 3) || (!whiteMove && movingPiece.getPosition().getRow() == 4)) possibleMoves.get(possibleMoves.size() - 1).setBackground(Color.RED);
                 }
             } else {
                 if(!possibleMoves.isEmpty()) {
@@ -254,6 +280,9 @@ public class Board extends JFrame {
                             } else {
                                 doCastling(square);
                                 movesList.add(new Move(movingPiece.getPosition(), square));
+                                doEnPassant(square);
+                                isCastling = false;
+                                isEnPassant = false;
                             }
 
                             oldSquare.setPiece(null); //Removing the piece
@@ -282,55 +311,47 @@ public class Board extends JFrame {
         }
     }
 
-    private void doCastling(Square square) { //If player castling this method implements it
-        if(isCastling && whiteMove && square.getRow() == 7) {
-            if(square.getColumn() == 2) {
-                isCastling = false;
-                Piece leftWhiteRook = squares[7][0].getPiece();
-                movesList.add(new Move(leftWhiteRook.getPosition(), squares[7][3]));
-                squares[7][0].setPiece(null);
-                squares[7][0].removeAll();
-                squares[7][3].setPiece(leftWhiteRook);
-                leftWhiteRook.setPosition(squares[7][3]);
-                setPictureOfPiece(leftWhiteRook);
-                squares[7][0].repaint();
-                squares[7][3].revalidate();
-            } else if(square.getColumn() == 6) {
-                isCastling = false;
-                Piece rightWhiteRook = squares[7][7].getPiece();
-                movesList.add(new Move(rightWhiteRook.getPosition(), squares[7][5]));
-                squares[7][7].setPiece(null);
-                squares[7][7].removeAll();
-                squares[7][5].setPiece(rightWhiteRook);
-                rightWhiteRook.setPosition(squares[7][5]);
-                setPictureOfPiece(rightWhiteRook);
-                squares[7][7].repaint();
-                squares[7][5].revalidate();
+    private void checkEnPassant() { //Checks if en passant is possible
+        if(movingPiece.getClass() == Pawn.class) {
+            if(whiteMove) {
+                if(movingPiece.getPosition().getRow() == 3) {
+                    Move lastMove = movesList.get(movesList.size() - 1);
+                    if(lastMove.getToSquare().getPiece().getClass() == Pawn.class && (lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() + 1) || lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() - 1))) {
+                        if(lastMove.getToSquare().getRow() == lastMove.getFromSquare().getRow() + 2) {
+                            possibleMoves.add(squares[lastMove.getToSquare().getRow() - 1][lastMove.getToSquare().getColumn()]);
+                            isEnPassant = true;
+                        }
+                    }
+                }
+            } else if(!whiteMove) {
+                if(movingPiece.getPosition().getRow() == 4) {
+                    Move lastMove = movesList.get(movesList.size() - 1);
+                    if(lastMove.getToSquare().getPiece().getClass() == Pawn.class && (lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() + 1) || lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() - 1))) {
+                        if(lastMove.getToSquare().getRow() == lastMove.getFromSquare().getRow() - 2) {
+                            possibleMoves.add(squares[lastMove.getToSquare().getRow() + 1][lastMove.getToSquare().getColumn()]);
+                            isEnPassant = true;
+                        }
+                    }
+                }
             }
         }
-        if(isCastling && !whiteMove && square.getRow() == 0) {
-            if(square.getColumn() == 2) {
-                isCastling = false;
-                Piece leftWhiteRook = squares[0][0].getPiece();
-                movesList.add(new Move(leftWhiteRook.getPosition(), squares[0][3]));
-                squares[0][0].setPiece(null);
-                squares[0][0].removeAll();
-                squares[0][3].setPiece(leftWhiteRook);
-                leftWhiteRook.setPosition(squares[0][3]);
-                setPictureOfPiece(leftWhiteRook);
-                squares[0][0].repaint();
-                squares[0][3].revalidate();
-            } else if(square.getColumn() == 6) {
-                isCastling = false;
-                Piece rightWhiteRook = squares[0][7].getPiece();
-                movesList.add(new Move(rightWhiteRook.getPosition(), squares[0][5]));
-                squares[0][7].setPiece(null);
-                squares[0][7].removeAll();
-                squares[0][5].setPiece(rightWhiteRook);
-                rightWhiteRook.setPosition(squares[0][5]);
-                setPictureOfPiece(rightWhiteRook);
-                squares[0][7].repaint();
-                squares[0][5].revalidate();
+    }
+
+    private void doEnPassant(Square square) { //If player does en passant it implements it
+        if(isEnPassant) {
+            if(whiteMove && square.getRow() == 2) {
+                movesList.remove(movesList.size() - 1);
+                movesList.add(new Move(movingPiece.getPosition(), square, squares[3][square.getColumn()].getPiece()));
+                squares[3][square.getColumn()].setPiece(null);
+                squares[3][square.getColumn()].removeAll();
+                squares[3][square.getColumn()].repaint();
+            }
+            if(!whiteMove && square.getRow() == 5) {
+                movesList.remove(movesList.size() - 1);
+                movesList.add(new Move(movingPiece.getPosition(), square, squares[4][square.getColumn()].getPiece()));
+                squares[4][square.getColumn()].setPiece(null);
+                squares[4][square.getColumn()].removeAll();
+                squares[4][square.getColumn()].repaint();
             }
         }
     }
@@ -372,8 +393,59 @@ public class Board extends JFrame {
         }
     }
 
-    private void castlingMove() {
-
+    private void doCastling(Square square) { //If player castling this method implements it
+        if(isCastling) {
+            if(whiteMove && square.getRow() == 7) {
+                if(square.getColumn() == 2) {
+                    isCastling = false;
+                    Piece leftWhiteRook = squares[7][0].getPiece();
+                    movesList.add(new Move(leftWhiteRook.getPosition(), squares[7][3]));
+                    squares[7][0].setPiece(null);
+                    squares[7][0].removeAll();
+                    squares[7][3].setPiece(leftWhiteRook);
+                    leftWhiteRook.setPosition(squares[7][3]);
+                    setPictureOfPiece(leftWhiteRook);
+                    squares[7][0].repaint();
+                    squares[7][3].revalidate();
+                } else if(square.getColumn() == 6) {
+                    isCastling = false;
+                    Piece rightWhiteRook = squares[7][7].getPiece();
+                    movesList.add(new Move(rightWhiteRook.getPosition(), squares[7][5]));
+                    squares[7][7].setPiece(null);
+                    squares[7][7].removeAll();
+                    squares[7][5].setPiece(rightWhiteRook);
+                    rightWhiteRook.setPosition(squares[7][5]);
+                    setPictureOfPiece(rightWhiteRook);
+                    squares[7][7].repaint();
+                    squares[7][5].revalidate();
+                }
+            }
+            if(!whiteMove && square.getRow() == 0) {
+                if(square.getColumn() == 2) {
+                    isCastling = false;
+                    Piece leftWhiteRook = squares[0][0].getPiece();
+                    movesList.add(new Move(leftWhiteRook.getPosition(), squares[0][3]));
+                    squares[0][0].setPiece(null);
+                    squares[0][0].removeAll();
+                    squares[0][3].setPiece(leftWhiteRook);
+                    leftWhiteRook.setPosition(squares[0][3]);
+                    setPictureOfPiece(leftWhiteRook);
+                    squares[0][0].repaint();
+                    squares[0][3].revalidate();
+                } else if(square.getColumn() == 6) {
+                    isCastling = false;
+                    Piece rightWhiteRook = squares[0][7].getPiece();
+                    movesList.add(new Move(rightWhiteRook.getPosition(), squares[0][5]));
+                    squares[0][7].setPiece(null);
+                    squares[0][7].removeAll();
+                    squares[0][5].setPiece(rightWhiteRook);
+                    rightWhiteRook.setPosition(squares[0][5]);
+                    setPictureOfPiece(rightWhiteRook);
+                    squares[0][7].repaint();
+                    squares[0][5].revalidate();
+                }
+            }
+        }
     }
 
     private boolean whatIfPieceWasThere(Piece piece, Square moveToS) {

@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="Only valid moves shows up during game">
-      <change afterPath="$PROJECT_DIR$/src/chess/moves/KingMove.java" afterDir="false" />
+    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="Castling started">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chess/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/CheckChecks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/CheckChecks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/pieces/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/pieces/King.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +123,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700318525837</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Castling started">
+      <option name="closed" value="true" />
+      <created>1700381643502</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1700381643502</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -151,7 +156,8 @@
     <MESSAGE value="Check if check method implemented&#10;TODO: use it in game" />
     <MESSAGE value="Check check method working&#10;TODO: implement it in chess game" />
     <MESSAGE value="Only valid moves shows up during game" />
-    <option name="LAST_COMMIT_MESSAGE" value="Only valid moves shows up during game" />
+    <MESSAGE value="Castling started" />
+    <option name="LAST_COMMIT_MESSAGE" value="Castling started" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -80,11 +80,11 @@ public class Board extends JFrame {
 
     private void setPictureOfPiece(Piece piece) {
         if(piece.getClass() == King.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 0 : 6])));
-        if(piece.getClass() == Queen.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 1 : 7])));
-        if(piece.getClass() == Knight.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 2 : 8])));
-        if(piece.getClass() == Bishop.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 3 : 9])));
-        if(piece.getClass() == Rook.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 4 : 10])));
-        if(piece.getClass() == Pawn.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 5 : 11])));
+        else if(piece.getClass() == Queen.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 1 : 7])));
+        else if(piece.getClass() == Knight.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 2 : 8])));
+        else if(piece.getClass() == Bishop.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 3 : 9])));
+        else if(piece.getClass() == Rook.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 4 : 10])));
+        else if(piece.getClass() == Pawn.class) piece.getPosition().add(new JLabel(new ImageIcon(onePiecePicture[piece.getColor() == "white" ? 5 : 11])));
     }
 
     private void setLastFiveMovesText(List<Move> moves) {
@@ -206,7 +206,7 @@ public class Board extends JFrame {
                 setPictureOfPiece(toSquare.getPiece());
                 toSquare.revalidate();
                 if(movesList.get(movesList.size() - 1).getKickedPiece().getClass() == Pawn.class) { //En passant
-                    if((movesList.get(movesList.size() - 2).getFromSquare().getRow() + 2) == movesList.get(movesList.size() - 2).getToSquare().getRow()) {
+                    if(movesList.get(movesList.size() - 1).getToSquare().getRow() == 2 && (movesList.get(movesList.size() - 2).getFromSquare().getRow() + 2) == movesList.get(movesList.size() - 2).getToSquare().getRow()) {
                         squares[fromSquare.getRow() + 1][fromSquare.getColumn()].setPiece(movesList.get(movesList.size() - 1).getKickedPiece());
                         movesList.get(movesList.size() - 1).getKickedPiece().setPosition(squares[fromSquare.getRow() + 1][fromSquare.getColumn()]);
                         setPictureOfPiece(movesList.get(movesList.size() - 1).getKickedPiece());
@@ -215,7 +215,8 @@ public class Board extends JFrame {
                         setPictureOfPiece(movesList.get(movesList.size() - 1).getKickedPiece());
                         fromSquare.repaint();
                         squares[fromSquare.getRow() + 1][fromSquare.getColumn()].revalidate();
-                    } else if((movesList.get(movesList.size() - 2).getFromSquare().getRow() - 2) == movesList.get(movesList.size() - 2).getToSquare().getRow()) {
+                    } else if(movesList.get(movesList.size() - 1).getToSquare().getPiece() != null && movesList.get(movesList.size() - 1).getToSquare().getPiece().getColor() == "black"
+                    && movesList.get(movesList.size() - 1).getFromSquare().getRow() == 4 && (movesList.get(movesList.size() - 2).getFromSquare().getRow() - 2) == movesList.get(movesList.size() - 2).getToSquare().getRow()) {
                         squares[fromSquare.getRow() - 1][fromSquare.getColumn()].setPiece(movesList.get(movesList.size() - 1).getKickedPiece());
                         movesList.get(movesList.size() - 1).getKickedPiece().setPosition(squares[fromSquare.getRow() - 1][fromSquare.getColumn()]);
                         setPictureOfPiece(movesList.get(movesList.size() - 1).getKickedPiece());
@@ -319,7 +320,7 @@ public class Board extends JFrame {
             if(whiteMove) {
                 if(movingPiece.getPosition().getRow() == 3) {
                     Move lastMove = movesList.get(movesList.size() - 1);
-                    if(lastMove.getToSquare().getPiece().getClass() == Pawn.class && (lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() + 1) || lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() - 1))) {
+                    if(lastMove != null && lastMove.getToSquare().getPiece().getClass() == Pawn.class && (lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() + 1) || lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() - 1))) {
                         if(lastMove.getToSquare().getRow() == lastMove.getFromSquare().getRow() + 2) {
                             possibleMoves.add(squares[lastMove.getToSquare().getRow() - 1][lastMove.getToSquare().getColumn()]);
                             isEnPassant = true;
@@ -329,7 +330,7 @@ public class Board extends JFrame {
             } else if(!whiteMove) {
                 if(movingPiece.getPosition().getRow() == 4) {
                     Move lastMove = movesList.get(movesList.size() - 1);
-                    if(lastMove.getToSquare().getPiece().getClass() == Pawn.class && (lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() + 1) || lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() - 1))) {
+                    if(lastMove != null && lastMove.getToSquare().getPiece().getClass() == Pawn.class && (lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() + 1) || lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() - 1))) {
                         if(lastMove.getToSquare().getRow() == lastMove.getFromSquare().getRow() - 2) {
                             possibleMoves.add(squares[lastMove.getToSquare().getRow() + 1][lastMove.getToSquare().getColumn()]);
                             isEnPassant = true;
@@ -342,19 +343,14 @@ public class Board extends JFrame {
 
     private void doEnPassant(Square square) { //If player does en passant it implements it
         if(isEnPassant) {
-            if(whiteMove && square.getRow() == 2) {
+            int row = whiteMove ? 2 : 5;
+            int hitRow = whiteMove ? 3 : 4;
+            if(square.getRow() == row) {
                 movesList.remove(movesList.size() - 1);
-                movesList.add(new Move(movingPiece.getPosition(), square, squares[3][square.getColumn()].getPiece()));
-                squares[3][square.getColumn()].setPiece(null);
-                squares[3][square.getColumn()].removeAll();
-                squares[3][square.getColumn()].repaint();
-            }
-            if(!whiteMove && square.getRow() == 5) {
-                movesList.remove(movesList.size() - 1);
-                movesList.add(new Move(movingPiece.getPosition(), square, squares[4][square.getColumn()].getPiece()));
-                squares[4][square.getColumn()].setPiece(null);
-                squares[4][square.getColumn()].removeAll();
-                squares[4][square.getColumn()].repaint();
+                movesList.add(new Move(movingPiece.getPosition(), square, squares[hitRow][square.getColumn()].getPiece()));
+                squares[hitRow][square.getColumn()].setPiece(null);
+                squares[hitRow][square.getColumn()].removeAll();
+                squares[hitRow][square.getColumn()].repaint();
             }
         }
     }

@@ -357,7 +357,7 @@ public class Board extends JFrame {
 
     private void checkCastling() {
         if(movingPiece.getClass() == King.class) { //Check castling
-            if(movingPiece.getColor().equals("white") && movingPiece.getPosition() == squares[7][4]) {
+            if(movingPiece.getColor().equals("white") && movingPiece.getPosition() == squares[7][4] && !checkCheck(squares, pieceSets[0].getPiece(8))) {
                 boolean canCastleRight = true;
                 boolean canCastleLeft = true;
                 for(Move m : movesList) {
@@ -372,8 +372,7 @@ public class Board extends JFrame {
                     possibleMoves.add(squares[7][2]);
                     isCastling = true;
                 }
-            }
-            if(movingPiece.getColor().equals("black") && movingPiece.getPosition() == squares[0][4]) {
+            } else if(movingPiece.getColor().equals("black") && movingPiece.getPosition() == squares[0][4] && !checkCheck(squares, pieceSets[1].getPiece(8))) {
                 boolean canCastleRight = true;
                 boolean canCastleLeft = true;
                 for(Move m : movesList) {

@@ -19,6 +19,7 @@ import java.util.List;
 import static chess.CheckChecks.checkCheck;
 
 public class Board extends JFrame {
+    private int gamemode;
     public Square squares[][] = new Square[8][8];
     private PieceSet[] pieceSets = new PieceSet[2];
     private List<Square> possibleMoves = new ArrayList<>();
@@ -30,6 +31,10 @@ public class Board extends JFrame {
     private boolean whiteMove = true;
     private boolean isCastling = false;
     private boolean isEnPassant = false;
+
+    public Board(int gamemode) {
+        this.gamemode = gamemode;
+    }
 
     public void create(boolean isRobot) {
         setBounds(8, 8, 800, 880);
@@ -76,6 +81,7 @@ public class Board extends JFrame {
         }
         pack();
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private void setPictureOfPiece(Piece piece) {
@@ -317,24 +323,17 @@ public class Board extends JFrame {
 
     private void checkEnPassant() { //Checks if en passant is possible
         if(movingPiece.getClass() == Pawn.class) {
-            if(whiteMove) {
-                if(movingPiece.getPosition().getRow() == 3) {
-                    Move lastMove = movesList.get(movesList.size() - 1);
-                    if(lastMove != null && lastMove.getToSquare().getPiece().getClass() == Pawn.class && (lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() + 1) || lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() - 1))) {
-                        if(lastMove.getToSquare().getRow() == lastMove.getFromSquare().getRow() + 2) {
-                            possibleMoves.add(squares[lastMove.getToSquare().getRow() - 1][lastMove.getToSquare().getColumn()]);
-                            isEnPassant = true;
-                        }
+            int row = whiteMove ? 3 : 4;
+            if(movingPiece.getPosition().getRow() == row) {
+                Move lastMove = movesList.get(movesList.size() - 1);
+                if(lastMove != null && lastMove.getToSquare().getPiece().getClass() == Pawn.class && (lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() + 1) || lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() - 1))) {
+                    if(whiteMove && lastMove.getToSquare().getRow() == lastMove.getFromSquare().getRow() + 2) {
+                        possibleMoves.add(squares[lastMove.getToSquare().getRow() - 1][lastMove.getToSquare().getColumn()]);
+                        isEnPassant = true;
                     }
-                }
-            } else if(!whiteMove) {
-                if(movingPiece.getPosition().getRow() == 4) {
-                    Move lastMove = movesList.get(movesList.size() - 1);
-                    if(lastMove != null && lastMove.getToSquare().getPiece().getClass() == Pawn.class && (lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() + 1) || lastMove.getToSquare().getColumn() == (movingPiece.getPosition().getColumn() - 1))) {
-                        if(lastMove.getToSquare().getRow() == lastMove.getFromSquare().getRow() - 2) {
-                            possibleMoves.add(squares[lastMove.getToSquare().getRow() + 1][lastMove.getToSquare().getColumn()]);
-                            isEnPassant = true;
-                        }
+                    if(!whiteMove && lastMove.getToSquare().getRow() == lastMove.getFromSquare().getRow() - 2) {
+                        possibleMoves.add(squares[lastMove.getToSquare().getRow() + 1][lastMove.getToSquare().getColumn()]);
+                        isEnPassant = true;
                     }
                 }
             }

@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SelectDifficultyWindow extends JFrame {
-    public SelectDifficultyWindow() {
+    public SelectDifficultyWindow(String gameName) {
         setTitle("Sakk");
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -37,20 +37,32 @@ public class SelectDifficultyWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Board board = new Board(0);
-                board.create(false);
+                Board board = null;
+                if(!gameName.equals("")) board = new Board(gameName, 0);
+                else board = new Board(0);
+                board.create();
             }
         });
 
         easyRobotButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
+                Board board = null;
+                if(!gameName.equals("")) board = new Board(gameName, 1);
+                else board = new Board(1);
+                board.create();
             }
         });
 
         hardRobotButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
+                Board board = null;
+                if(!gameName.equals("")) board = new Board(gameName, 2);
+                else board = new Board(2);
+                board.create();
             }
         });
 

@@ -37,7 +37,7 @@ public class MenuWindow extends JFrame {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        new SelectDifficultyWindow();
+                        new SelectDifficultyWindow("");
                     }
                 });
             }
@@ -46,12 +46,20 @@ public class MenuWindow extends JFrame {
         loadGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new LoadGameWindow();
+                    }
+                });
             }
         });
 
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.exit(0);
             }
         });
 

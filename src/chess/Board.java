@@ -2,6 +2,8 @@ package chess;
 
 import chess.moves.Move;
 import chess.pieces.*;
+import chess.windows.SaveGameWindow;
+import chess.windows.SelectDifficultyWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,7 +21,8 @@ import java.util.List;
 import static chess.CheckChecks.checkCheck;
 
 public class Board extends JFrame {
-    private int gamemode;
+    private int gameMode;
+    private String gameName;
     public Square squares[][] = new Square[8][8];
     private PieceSet[] pieceSets = new PieceSet[2];
     private List<Square> possibleMoves = new ArrayList<>();
@@ -28,15 +31,25 @@ public class Board extends JFrame {
     private Image onePiecePicture[] = new Image[12]; //Stores the pictures if single pieces
     private JLabel[] lastFiveMoves = new JLabel[5];
     private JButton backButton = new JButton("Vissza");
+    private JButton menuButton = new JButton("Menü");
     private boolean whiteMove = true;
     private boolean isCastling = false;
     private boolean isEnPassant = false;
 
-    public Board(int gamemode) {
-        this.gamemode = gamemode;
+    public Board(int gameMode) {
+        this.gameMode = gameMode;
     }
 
-    public void create(boolean isRobot) {
+    public Board(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public Board(String gameName, int gameMode) {
+        this.gameMode = gameMode;
+        this.gameName = gameName;
+    }
+
+    public void create() {
         setBounds(8, 8, 800, 880);
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,7 +66,9 @@ public class Board extends JFrame {
         }
 
         add(backButton);
+        add(menuButton);
         backButtonClickEvent(backButton);
+        menuButtonClickEvent(menuButton);
 
         //Set pictures of pieces
         BufferedImage allPieces = null;
@@ -82,6 +97,21 @@ public class Board extends JFrame {
         pack();
         setVisible(true);
         setLocationRelativeTo(null);
+    }
+
+    private void menuButtonClickEvent(JButton menuButton) {
+        menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new SaveGameWindow(movesList);
+                        dispose();
+                    }
+                });
+            }
+        });
     }
 
     private void setPictureOfPiece(Piece piece) {
@@ -221,8 +251,7 @@ public class Board extends JFrame {
                         setPictureOfPiece(movesList.get(movesList.size() - 1).getKickedPiece());
                         fromSquare.repaint();
                         squares[fromSquare.getRow() + 1][fromSquare.getColumn()].revalidate();
-                    } else if(movesList.get(movesList.size() - 1).getToSquare().getPiece() != null && movesList.get(movesList.size() - 1).getToSquare().getPiece().getColor() == "black"
-                    && movesList.get(movesList.size() - 1).getFromSquare().getRow() == 4 && (movesList.get(movesList.size() - 2).getFromSquare().getRow() - 2) == movesList.get(movesList.size() - 2).getToSquare().getRow()) {
+                    } else if(movesList.get(movesList.size() - 1).getToSquare().getRow() == 5 && (movesList.get(movesList.size() - 2).getFromSquare().getRow() - 2) == movesList.get(movesList.size() - 2).getToSquare().getRow()) {
                         squares[fromSquare.getRow() - 1][fromSquare.getColumn()].setPiece(movesList.get(movesList.size() - 1).getKickedPiece());
                         movesList.get(movesList.size() - 1).getKickedPiece().setPosition(squares[fromSquare.getRow() - 1][fromSquare.getColumn()]);
                         setPictureOfPiece(movesList.get(movesList.size() - 1).getKickedPiece());

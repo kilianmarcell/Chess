@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="Menu added">
-      <change afterPath="$PROJECT_DIR$/a.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chess/windows/LoadGameWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chess/windows/SaveGameWindow.java" afterDir="false" />
+    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="Navigation implemented + tested✔">
+      <change afterPath="$PROJECT_DIR$/haha.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sakkmatt.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chess/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/windows/MenuWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/windows/MenuWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/windows/SelectDifficultyWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/windows/SelectDifficultyWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chess/CheckChecks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/CheckChecks.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701010174115</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Navigation implemented + tested✔">
+      <option name="closed" value="true" />
+      <created>1701096581300</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1701096581300</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -216,7 +222,8 @@
     <MESSAGE value="En passant fixed + tested✔" />
     <MESSAGE value="Checkcheck method fixed + tested✔" />
     <MESSAGE value="Menu added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Menu added" />
+    <MESSAGE value="Navigation implemented + tested✔" />
+    <option name="LAST_COMMIT_MESSAGE" value="Navigation implemented + tested✔" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

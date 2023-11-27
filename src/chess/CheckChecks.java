@@ -69,7 +69,7 @@ public class CheckChecks {
         while(++x <= 7 && --y >= 0) {
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 7;
         }
         x = xHelp;
         y = yHelp;
@@ -84,10 +84,12 @@ public class CheckChecks {
         y = yHelp;
 
         //Moving right down on board
+        System.out.println();
         while(++x <= 7 && ++y <= 7) {
+            System.out.println("x: " + x + " y: " + y);
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
+            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 7;
         }
         return false;
     }
@@ -100,21 +102,21 @@ public class CheckChecks {
         int y = yHelp;
 
         if(x >= 2 && y >= 1 && squares[x - 2][y - 1].getPiece() != null && squares[x - 2][y - 1].getPiece().getClass() == Bishop.class
-        && squares[x - 2][y - 1].getPiece().getColor() != color) return true;
+        && !squares[x - 2][y - 1].getPiece().getColor().equals(color)) return true;
         if(x >= 1 && y >= 2 && squares[x - 1][y - 2].getPiece() != null && squares[x - 1][y - 2].getPiece().getClass() == Bishop.class
-        && squares[x - 1][y - 2].getPiece().getColor() != color) return true;
+        && !squares[x - 1][y - 2].getPiece().getColor().equals(color)) return true;
         if(x >= 2 && y <= 6 && squares[x - 2][y + 1].getPiece() != null && squares[x - 2][y + 1].getPiece().getClass() == Bishop.class
-        && squares[x - 2][y + 1].getPiece().getColor() != color) return true;
+        && !squares[x - 2][y + 1].getPiece().getColor().equals(color)) return true;
         if(x >= 1 && y <= 5 && squares[x - 1][y + 2].getPiece() != null && squares[x - 1][y + 2].getPiece().getClass() == Bishop.class
-        && squares[x - 1][y + 2].getPiece().getColor() != color) return true;
+        && !squares[x - 1][y + 2].getPiece().getColor().equals(color)) return true;
         if(x <= 5 && y >= 1 && squares[x + 2][y - 1].getPiece() != null && squares[x + 2][y - 1].getPiece().getClass() == Bishop.class
-        && squares[x + 2][y - 1].getPiece().getColor() != color) return true;
+        && !squares[x + 2][y - 1].getPiece().getColor().equals(color)) return true;
         if(x <= 6 && y >= 2 && squares[x + 1][y - 2].getPiece() != null && squares[x + 1][y - 2].getPiece().getClass() == Bishop.class
-        && squares[x + 1][y - 2].getPiece().getColor() != color) return true;
+        && !squares[x + 1][y - 2].getPiece().getColor().equals(color)) return true;
         if(x <= 5 && y <= 6 && squares[x + 2][y + 1].getPiece() != null && squares[x + 2][y + 1].getPiece().getClass() == Bishop.class
-        && squares[x + 2][y + 1].getPiece().getColor() != color) return true;
+        && !squares[x + 2][y + 1].getPiece().getColor().equals(color)) return true;
         if(x <= 6 && y <= 5 && squares[x + 1][y + 2].getPiece() != null && squares[x + 1][y + 2].getPiece().getClass() == Bishop.class
-        && squares[x + 1][y + 2].getPiece().getColor() != color) return true;
+        && !squares[x + 1][y + 2].getPiece().getColor().equals(color)) return true;
 
         return false;
     }

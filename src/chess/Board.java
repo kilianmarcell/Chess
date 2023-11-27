@@ -15,14 +15,16 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import static chess.CheckChecks.checkCheck;
 
 public class Board extends JFrame {
-    private int gameMode;
-    private String gameName;
+    private int gameMode = 0;
+    private String gameName = "";
     public Square squares[][] = new Square[8][8];
     private PieceSet[] pieceSets = new PieceSet[2];
     private List<Square> possibleMoves = new ArrayList<>();
@@ -94,9 +96,29 @@ public class Board extends JFrame {
                 setPictureOfPiece(p);
             }
         }
+
         pack();
         setVisible(true);
         setLocationRelativeTo(null);
+
+        if(!gameName.equals("")) {
+            String loadMoves = "";
+            try {
+                loadMoves = Files.readString(Path.of(System.getProperty("user.dir") + "/" + gameName));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            int helpRow = -1;
+            for(char c : loadMoves.toCharArray()) {
+                if(c != '\n' && c != ' ' && helpRow == -1) {
+                    helpRow = Character.getNumericValue(c);
+                } else if(helpRow != -1) {
+                    int helpColumn = Character.getNumericValue(c);
+                    pieceMove(squares[helpRow - 1][helpColumn - 1]);
+                    helpRow = -1;
+                }
+            }
+        }
     }
 
     private void menuButtonClickEvent(JButton menuButton) {

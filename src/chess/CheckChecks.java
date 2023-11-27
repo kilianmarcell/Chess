@@ -1,9 +1,6 @@
 package chess;
 
-import chess.pieces.Bishop;
-import chess.pieces.Knight;
-import chess.pieces.Queen;
-import chess.pieces.Rook;
+import chess.pieces.*;
 
 public class CheckChecks {
     //Check if white or black king is in check
@@ -11,6 +8,25 @@ public class CheckChecks {
         if(diagonalCheck(squares, king)) return true;
         if(straightCheck(squares, king)) return true;
         if(bishopCheck(squares, king)) return true;
+        if(pawnCheck(squares, king)) return true;
+        return false;
+    }
+
+    private static boolean pawnCheck(Square[][] squares, Piece king) {
+        int xHelp = king.getPosition().getRow();
+        int yHelp = king.getPosition().getColumn();
+        String color = king.getColor();
+        int x = xHelp;
+        int y = yHelp;
+
+        if(color.equals("white")) {
+            if(x > 0 && y > 0 && squares[x - 1][y - 1].getPiece() != null && !squares[x - 1][y - 1].getPiece().getColor().equals(color) && squares[x - 1][y - 1].getPiece().getClass() == Pawn.class) return true;
+            if(x > 0 && y < 7 && squares[x - 1][y + 1].getPiece() != null && !squares[x - 1][y + 1].getPiece().getColor().equals(color) && squares[x - 1][y + 1].getPiece().getClass() == Pawn.class) return true;
+        }
+        if(color.equals("black")) {
+            if(x < 7 && y > 0 && squares[x + 1][y - 1].getPiece() != null && !squares[x + 1][y - 1].getPiece().getColor().equals(color) && squares[x + 1][y - 1].getPiece().getClass() == Pawn.class) return true;
+            if(x < 7 && y < 7 && squares[x + 1][y + 1].getPiece() != null && !squares[x + 1][y + 1].getPiece().getColor().equals(color) && squares[x + 1][y + 1].getPiece().getClass() == Pawn.class) return true;
+        }
         return false;
     }
 
@@ -84,9 +100,7 @@ public class CheckChecks {
         y = yHelp;
 
         //Moving right down on board
-        System.out.println();
         while(++x <= 7 && ++y <= 7) {
-            System.out.println("x: " + x + " y: " + y);
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
             else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 7;

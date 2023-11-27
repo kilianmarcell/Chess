@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static chess.CheckChecks.checkCheck;
 
@@ -222,8 +223,34 @@ public class Board extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 pieceMove(square);
+                if(gameMode > 0 && !whiteMove) {
+                    List<Piece> blackPieces = pieceSets[1].getPieces();
+                    List<Piece> removedPiecesHelp = new ArrayList<>();
+                    randomMove(blackPieces, removedPiecesHelp);
+                }
             }
         });
+    }
+
+    private void randomMove(List<Piece> blackPieces, List<Piece> removedPiecesHelp) {
+        Random random = new Random();
+        int randomPiece = random.nextInt(blackPieces.size());
+        Piece helpPiece = blackPieces.get(randomPiece);
+
+        if(helpPiece == squares[helpPiece.getPosition().getRow()][helpPiece.getPosition().getColumn()].getPiece()) pieceMove(helpPiece.getPosition());
+        if(possibleMoves.isEmpty()) {
+            removedPiecesHelp.add(helpPiece);
+            blackPieces.remove(helpPiece);
+            pieceMove(squares[0][0]);
+        } else {
+            pieceMove(possibleMoves.get(random.nextInt(possibleMoves.size())));
+        }
+
+        if(!whiteMove) randomMove(blackPieces, removedPiecesHelp);
+        else if(whiteMove && !removedPiecesHelp.isEmpty()) {
+            for(Piece p : removedPiecesHelp) blackPieces.add(p);
+            removedPiecesHelp.clear();
+        }
     }
 
     private void oneMoveBack() {
@@ -363,7 +390,10 @@ public class Board extends JFrame {
                 }
                 setLastFiveMovesText(movesList);
                 if(checkCheck(squares, whiteMove ? pieceSets[0].getPiece(8) : pieceSets[1].getPiece(8))) {
-                    if(checkCheckMate()) System.out.println("Sakk matt!");
+                    if(checkCheckMate()) {
+                        System.out.println("Sakk matt!");
+                        JOptionPane.showMessageDialog(null, "Sakk matt!\nGratulálok, " + (whiteMove ? "fekete" : "fehér") + " nyert!");
+                    }
                     else System.out.println("Sakk!");
                 }
                 possibleMoves.clear();

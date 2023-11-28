@@ -218,7 +218,7 @@ public class Board extends JFrame {
         }
     }
 
-    private void mouseClick(Square square) {
+    private void mouseClick(Square square) { //Implements a piece selection and that piece's move
         square.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -232,7 +232,7 @@ public class Board extends JFrame {
         });
     }
 
-    private void randomMove(List<Piece> blackPieces, List<Piece> removedPiecesHelp) {
+    private void randomMove(List<Piece> blackPieces, List<Piece> removedPiecesHelp) { //Implements a random move to the robot
         Random random = new Random();
         int randomPiece = random.nextInt(blackPieces.size());
         Piece helpPiece = blackPieces.get(randomPiece);

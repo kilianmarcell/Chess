@@ -58,4 +58,8 @@ public class Pawn extends Piece {
         }
         return possibleMoves;
     }
+
+    public String getMoveDirection() {
+        return moveDirection;
+    }
 }

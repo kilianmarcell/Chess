@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="Tests added">
-      <change afterPath="$PROJECT_DIR$/src/chess.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dokumentacio.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/~$kumentacio.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/~WRL0173.tmp" afterDir="false" />
+    <list default="true" id="1803a0bb-59d5-4f85-b557-a7cd382625be" name="Changes" comment="Dokumentáció hozzáadva">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chess/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chess/moves/RookMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/moves/RookMoves.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +216,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701158582662</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Dokumentáció hozzáadva">
+      <option name="closed" value="true" />
+      <created>1701161705043</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1701161705043</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -255,7 +260,8 @@
     <MESSAGE value="Checkcheck method fixed" />
     <MESSAGE value="Robot gameMode started" />
     <MESSAGE value="Tests added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tests added" />
+    <MESSAGE value="Dokumentáció hozzáadva" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dokumentáció hozzáadva" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

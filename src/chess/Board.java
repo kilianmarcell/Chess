@@ -3,7 +3,6 @@ package chess;
 import chess.moves.Move;
 import chess.pieces.*;
 import chess.windows.SaveGameWindow;
-import chess.windows.SelectDifficultyWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -224,32 +223,32 @@ public class Board extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 pieceMove(square);
                 if(gameMode > 0 && !whiteMove) {
-                    List<Piece> blackPieces = pieceSets[1].getPieces();
-                    List<Piece> removedPiecesHelp = new ArrayList<>();
-                    randomMove(blackPieces, removedPiecesHelp);
+                    int removedPiecesIndex[] = new int[16];
+                    randomMove(removedPiecesIndex);
                 }
             }
         });
     }
 
-    private void randomMove(List<Piece> blackPieces, List<Piece> removedPiecesHelp) { //Implements a random move to the robot
+    private void randomMove(int removedPiecesIndex[]) { //Implements a random move to the robot
         Random random = new Random();
-        int randomPiece = random.nextInt(blackPieces.size());
-        Piece helpPiece = blackPieces.get(randomPiece);
+        int countRemovedPieceNumber = 0;
+        for(int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) countRemovedPieceNumber++;
+        int randomIndex = random.nextInt(15 - countRemovedPieceNumber);
+        for(int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) randomIndex++;
+        Piece nowMovePiece = pieceSets[1].getPiece(randomIndex);
+        if(movingPiece == null && nowMovePiece == squares[nowMovePiece.getPosition().getRow()][nowMovePiece.getPosition().getColumn()].getPiece()) pieceMove(nowMovePiece.getPosition());
 
-        if(helpPiece == squares[helpPiece.getPosition().getRow()][helpPiece.getPosition().getColumn()].getPiece()) pieceMove(helpPiece.getPosition());
         if(possibleMoves.isEmpty()) {
-            removedPiecesHelp.add(helpPiece);
-            blackPieces.remove(helpPiece);
-            pieceMove(squares[0][0]);
+            int removedPiecesNumberHelp = 0;
+            for(int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) removedPiecesNumberHelp++;
+            if(removedPiecesNumberHelp < 16) {
+                removedPiecesIndex[randomIndex] = 1;
+                movingPiece = null;
+                randomMove(removedPiecesIndex);
+            }
         } else {
             pieceMove(possibleMoves.get(random.nextInt(possibleMoves.size())));
-        }
-
-        if(!whiteMove) randomMove(blackPieces, removedPiecesHelp);
-        else if(whiteMove && !removedPiecesHelp.isEmpty()) {
-            for(Piece p : removedPiecesHelp) blackPieces.add(p);
-            removedPiecesHelp.clear();
         }
     }
 
@@ -444,11 +443,11 @@ public class Board extends JFrame {
                     if(m.getFromSquare() == squares[7][4] || m.getFromSquare() == squares[7][7]) canCastleRight = false;
                     if(m.getFromSquare() == squares[7][4] || m.getFromSquare() == squares[7][0]) canCastleLeft = false;
                 }
-                if(squares[7][7].getPiece().getClass() == Rook.class && squares[7][7].getPiece().getColor().equals("white") && canCastleRight && squares[7][5].getPiece() == null && squares[7][6].getPiece() == null) {
+                if(squares[7][7].getPiece() != null && squares[7][7].getPiece().getClass() == Rook.class && squares[7][7].getPiece().getColor().equals("white") && canCastleRight && squares[7][5].getPiece() == null && squares[7][6].getPiece() == null) {
                     possibleMoves.add(squares[7][6]);
                     isCastling = true;
                 }
-                if(squares[7][0].getPiece().getClass() == Rook.class && squares[7][0].getPiece().getColor().equals("white") && canCastleLeft && squares[7][1].getPiece() == null && squares[7][2].getPiece() == null && squares[7][3].getPiece() == null) {
+                if(squares[7][0].getPiece() != null && squares[7][0].getPiece().getClass() == Rook.class && squares[7][0].getPiece().getColor().equals("white") && canCastleLeft && squares[7][1].getPiece() == null && squares[7][2].getPiece() == null && squares[7][3].getPiece() == null) {
                     possibleMoves.add(squares[7][2]);
                     isCastling = true;
                 }
@@ -459,11 +458,11 @@ public class Board extends JFrame {
                     if(m.getFromSquare() == squares[0][4] || m.getFromSquare() == squares[0][7]) canCastleRight = false;
                     if(m.getFromSquare() == squares[0][4] || m.getFromSquare() == squares[0][0]) canCastleLeft = false;
                 }
-                if(squares[0][7].getPiece().getClass() == Rook.class && squares[0][7].getPiece().getColor().equals("black") && canCastleRight && squares[0][5].getPiece() == null && squares[0][6].getPiece() == null) {
+                if(squares[0][7].getPiece() != null && squares[0][7].getPiece().getClass() == Rook.class && squares[0][7].getPiece().getColor().equals("black") && canCastleRight && squares[0][5].getPiece() == null && squares[0][6].getPiece() == null) {
                     possibleMoves.add(squares[0][6]);
                     isCastling = true;
                 }
-                if(squares[0][0].getPiece().getClass() == Rook.class && squares[0][0].getPiece().getColor().equals("black") && canCastleLeft && squares[0][1].getPiece() == null && squares[0][2].getPiece() == null && squares[0][3].getPiece() == null) {
+                if(squares[0][0].getPiece() != null && squares[0][0].getPiece().getClass() == Rook.class && squares[0][0].getPiece().getColor().equals("black") && canCastleLeft && squares[0][1].getPiece() == null && squares[0][2].getPiece() == null && squares[0][3].getPiece() == null) {
                     possibleMoves.add(squares[0][2]);
                     isCastling = true;
                 }

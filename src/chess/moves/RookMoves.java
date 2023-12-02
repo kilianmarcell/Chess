@@ -14,7 +14,7 @@ public class RookMoves {
         //Moving vertically
         while(--x >= 0) {
             if(squares[x][y].getPiece() == null) possibleMoves.add(squares[x][y]);
-            else if(!squares[x][y].getPiece().getColor().equals(squares[positionX][positionY].getPiece().getColor())) {
+            else if(squares[x][y].getPiece() != null && !squares[x][y].getPiece().getColor().equals(squares[positionX][positionY].getPiece().getColor())) {
                 possibleMoves.add(squares[x][y]);
                 x = 0;
             }
@@ -23,7 +23,7 @@ public class RookMoves {
         x = positionX;
         while(++x <= 7) {
             if(squares[x][y].getPiece() == null) possibleMoves.add(squares[x][y]);
-            else if(!squares[x][y].getPiece().getColor().equals(squares[positionX][positionY].getPiece().getColor())) {
+            else if(squares[x][y].getPiece() != null && !squares[x][y].getPiece().getColor().equals(squares[positionX][positionY].getPiece().getColor())) {
                 possibleMoves.add(squares[x][y]);
                 x = 7;
             }
@@ -34,7 +34,7 @@ public class RookMoves {
         //Moving horizontally
         while(--y >= 0) {
             if(squares[x][y].getPiece() == null) possibleMoves.add(squares[x][y]);
-            else if(!squares[x][y].getPiece().getColor().equals(squares[positionX][positionY].getPiece().getColor())) {
+            else if(squares[x][y].getPiece() != null && !squares[x][y].getPiece().getColor().equals(squares[positionX][positionY].getPiece().getColor())) {
                 possibleMoves.add(squares[x][y]);
                 y = 0;
             }
@@ -43,7 +43,7 @@ public class RookMoves {
         y = positionY;
         while(++y <= 7) {
             if(squares[x][y].getPiece() == null) possibleMoves.add(squares[x][y]);
-            else if(!squares[x][y].getPiece().getColor().equals(squares[positionX][positionY].getPiece().getColor())) {
+            else if(squares[x][y].getPiece() != null && !squares[x][y].getPiece().getColor().equals(squares[positionX][positionY].getPiece().getColor())) {
                 possibleMoves.add(squares[x][y]);
                 y = 7;
             }

@@ -242,10 +242,10 @@ public class Board extends JFrame {
         if(possibleMoves.isEmpty()) {
             int removedPiecesNumberHelp = 0;
             for(int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) removedPiecesNumberHelp++;
-            if(removedPiecesNumberHelp < 16) {
+            if(removedPiecesNumberHelp < 16 && randomIndex < 16) {
                 removedPiecesIndex[randomIndex] = 1;
                 movingPiece = null;
-                randomMove(removedPiecesIndex);
+                if(!checkCheckMate()) randomMove(removedPiecesIndex);
             }
         } else {
             pieceMove(possibleMoves.get(random.nextInt(possibleMoves.size())));

@@ -41,13 +41,13 @@ public class CheckChecks {
         while(--x >= 0) {
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Rook.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
+            else if(helpPiece != null) x = 0;
         }
         x = xHelp;
         while(++x <= 7) {
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Rook.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 7;
+            else if(helpPiece != null) x = 7;
         }
         x = xHelp;
 
@@ -55,13 +55,13 @@ public class CheckChecks {
         while(--y >= 0) {
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Rook.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) y = 0;
+            else if(helpPiece != null) y = 0;
         }
         y = yHelp;
         while(++y <= 7) {
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Rook.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) y = 7;
+            else if(helpPiece != null) y = 7;
         }
         return false;
     }
@@ -76,7 +76,7 @@ public class CheckChecks {
         while(--x >= 0 && --y >= 0) {
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
+            else if(helpPiece != null) x = 0;
         }
         x = xHelp;
         y = yHelp;
@@ -85,7 +85,7 @@ public class CheckChecks {
         while(++x <= 7 && --y >= 0) {
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 7;
+            else if(helpPiece != null) x = 7;
         }
         x = xHelp;
         y = yHelp;
@@ -94,7 +94,7 @@ public class CheckChecks {
         while(--x >= 0 && ++y <= 7) {
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 0;
+            else if(helpPiece != null) x = 0;
         }
         x = xHelp;
         y = yHelp;
@@ -103,7 +103,7 @@ public class CheckChecks {
         while(++x <= 7 && ++y <= 7) {
             Piece helpPiece = squares[x][y].getPiece();
             if(helpPiece != null && !squares[x][y].getPiece().getColor().equals(color) && (squares[x][y].getPiece().getClass() == Queen.class || squares[x][y].getPiece().getClass() == Knight.class)) return true;
-            else if(helpPiece != null && squares[x][y].getPiece().getColor().equals(color)) x = 7;
+            else if(helpPiece != null) x = 7;
         }
         return false;
     }

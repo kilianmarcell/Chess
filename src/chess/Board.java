@@ -223,32 +223,61 @@ public class Board extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 pieceMove(square);
                 if(gameMode > 0 && !whiteMove) {
-                    int removedPiecesIndex[] = new int[16];
-                    randomMove(removedPiecesIndex);
+                    if(gameMode == 1) randomMove(new int[16]);
+                    else if(gameMode == 2) {
+                        randomMoveHit(new int[16]);
+                        if(!whiteMove) {
+                            randomMove(new int[16]);
+                        }
+                    }
                 }
             }
         });
     }
 
-    private void randomMove(int removedPiecesIndex[]) { //Implements a random move to the robot
+    private void randomMove(int removedPiecesIndex[]) { //Implements a random move for the robot
         Random random = new Random();
         int countRemovedPieceNumber = 0;
         for(int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) countRemovedPieceNumber++;
-        int randomIndex = random.nextInt(15 - countRemovedPieceNumber);
-        for(int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) randomIndex++;
-        Piece nowMovePiece = pieceSets[1].getPiece(randomIndex);
-        if(movingPiece == null && nowMovePiece == squares[nowMovePiece.getPosition().getRow()][nowMovePiece.getPosition().getColumn()].getPiece()) pieceMove(nowMovePiece.getPosition());
+        if(countRemovedPieceNumber <= 15) {
+            int randomIndex = 0;
+            if(countRemovedPieceNumber != 15) random.nextInt(15 - countRemovedPieceNumber);
+            else randomIndex = 0;
+            if(randomIndex >= 0 && randomIndex <= 15) {
+                for (int i = 0; i < 15; i++) if (removedPiecesIndex[i] == 1) randomIndex++;
+                Piece nowMovePiece = pieceSets[1].getPiece(randomIndex);
+                if (movingPiece == null && nowMovePiece == squares[nowMovePiece.getPosition().getRow()][nowMovePiece.getPosition().getColumn()].getPiece())
+                    pieceMove(nowMovePiece.getPosition());
 
-        if(possibleMoves.isEmpty()) {
-            int removedPiecesNumberHelp = 0;
-            for(int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) removedPiecesNumberHelp++;
-            if(removedPiecesNumberHelp < 16 && randomIndex < 16) {
-                removedPiecesIndex[randomIndex] = 1;
-                movingPiece = null;
-                if(!checkCheckMate()) randomMove(removedPiecesIndex);
+                if (possibleMoves.isEmpty()) {
+                    int removedPiecesNumberHelp = 0;
+                    for (int i = 0; i < 15; i++) if (removedPiecesIndex[i] == 1) removedPiecesNumberHelp++;
+                    if (removedPiecesNumberHelp < 16 && randomIndex < 16) {
+                        removedPiecesIndex[randomIndex] = 1;
+                        movingPiece = null;
+                        if(countRemovedPieceNumber < 15) randomMove(removedPiecesIndex);
+                    }
+                } else {
+                    pieceMove(possibleMoves.get(random.nextInt(possibleMoves.size())));
+                }
             }
-        } else {
-            pieceMove(possibleMoves.get(random.nextInt(possibleMoves.size())));
+        }
+
+    }
+
+    private void randomMoveHit(int removedPiecesIndex[]) { //Implements a random move with hit for the robot
+        for(Piece p : pieceSets[1].getPieces()) {
+            if(squares[p.getPosition().getRow()][p.getPosition().getColumn()].getPiece() == p) {
+                List<Square> moves = p.possibleMoves(squares);
+                for(int i = 0; i < moves.size(); i++) if(whatIfPieceWasThere(p, moves.get(i))) moves.remove(i--);
+                for(Square s : moves) {
+                    if(s.getPiece() != null) {
+                        pieceMove(p.getPosition());
+                        pieceMove(s);
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -394,6 +423,7 @@ public class Board extends JFrame {
                         JOptionPane.showMessageDialog(null, "Sakk matt!\nGratulálok, " + (whiteMove ? "fekete" : "fehér") + " nyert!");
                     }
                     else System.out.println("Sakk!");
+                    if(checkStalemate()) JOptionPane.showMessageDialog(null, "Patt!");
                 }
                 possibleMoves.clear();
                 movingPiece = null;
@@ -533,6 +563,17 @@ public class Board extends JFrame {
                 List<Square> possibleMovesHelp = p.possibleMoves(squares);
                 for(int i = 0; i < possibleMovesHelp.size(); i++) if(whatIfPieceWasThere(p, possibleMovesHelp.get(i))) possibleMovesHelp.remove(i--);
                 if(possibleMovesHelp.size() != 0) return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkStalemate() { //Checks stalemate
+        int helpWhite = whiteMove ? 0 : 1;
+        List<Piece> pieceListHelp = pieceSets[helpWhite].getPieces();
+        for(Piece p : pieceListHelp) {
+            if(squares[p.getPosition().getRow()][p.getPosition().getColumn()].getPiece() == p) {
+                if(!p.possibleMoves(squares).isEmpty()) return false;
             }
         }
         return true;

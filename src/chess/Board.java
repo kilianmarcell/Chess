@@ -2,6 +2,7 @@ package chess;
 
 import chess.moves.Move;
 import chess.pieces.*;
+import chess.windows.PawnChangeWindow;
 import chess.windows.SaveGameWindow;
 
 import javax.imageio.ImageIO;
@@ -101,7 +102,7 @@ public class Board extends JFrame {
         setVisible(true);
         setLocationRelativeTo(null);
 
-        if(!gameName.equals("")) {
+        if(!gameName.equals("")) { //If its not a new game it will load the moves
             String loadMoves = "";
             try {
                 loadMoves = Files.readString(Path.of(System.getProperty("user.dir") + "/" + gameName));
@@ -223,49 +224,41 @@ public class Board extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 pieceMove(square);
                 if(gameMode > 0 && !whiteMove) {
-                    if(gameMode == 1) randomMove(new int[16]);
+                    Random random = new Random();
+                    if(gameMode == 1) randomMove(new int[16], random);
                     else if(gameMode == 2) {
-                        randomMoveHit(new int[16]);
+                        randomMoveHit();
                         if(!whiteMove) {
-                            randomMove(new int[16]);
+                            randomMove(new int[16], random);
                         }
                     }
+                    if(movingPiece != null) pieceMove(squares[0][0]);
                 }
             }
         });
     }
 
-    private void randomMove(int removedPiecesIndex[]) { //Implements a random move for the robot
-        Random random = new Random();
-        int countRemovedPieceNumber = 0;
-        for(int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) countRemovedPieceNumber++;
-        if(countRemovedPieceNumber <= 15) {
-            int randomIndex = 0;
-            if(countRemovedPieceNumber != 15) random.nextInt(15 - countRemovedPieceNumber);
-            else randomIndex = 0;
-            if(randomIndex >= 0 && randomIndex <= 15) {
-                for (int i = 0; i < 15; i++) if (removedPiecesIndex[i] == 1) randomIndex++;
-                Piece nowMovePiece = pieceSets[1].getPiece(randomIndex);
-                if (movingPiece == null && nowMovePiece == squares[nowMovePiece.getPosition().getRow()][nowMovePiece.getPosition().getColumn()].getPiece())
-                    pieceMove(nowMovePiece.getPosition());
-
-                if (possibleMoves.isEmpty()) {
-                    int removedPiecesNumberHelp = 0;
-                    for (int i = 0; i < 15; i++) if (removedPiecesIndex[i] == 1) removedPiecesNumberHelp++;
-                    if (removedPiecesNumberHelp < 16 && randomIndex < 16) {
-                        removedPiecesIndex[randomIndex] = 1;
-                        movingPiece = null;
-                        if(countRemovedPieceNumber < 15) randomMove(removedPiecesIndex);
-                    }
-                } else {
-                    pieceMove(possibleMoves.get(random.nextInt(possibleMoves.size())));
-                }
+    private void randomMove(int removedPiecesIndex[], Random random) { //Implements a random move for the robot
+        int countRemovedPiecesNumber = 0;
+        for(int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) countRemovedPiecesNumber++;
+        int randomIndex = random.nextInt((15 - countRemovedPiecesNumber));
+        if(countRemovedPiecesNumber < 15 && randomIndex >= 0 && randomIndex <= 15) {
+            for (int i = 0; i < 15; i++) if(removedPiecesIndex[i] == 1) randomIndex++;
+            Piece nowMovePiece = pieceSets[1].getPiece(randomIndex);
+            if (movingPiece == null && nowMovePiece == squares[nowMovePiece.getPosition().getRow()][nowMovePiece.getPosition().getColumn()].getPiece()) {
+                pieceMove(nowMovePiece.getPosition());
+            }
+            if (possibleMoves.isEmpty()) {
+                removedPiecesIndex[randomIndex] = 1;
+                if(countRemovedPiecesNumber < 14) randomMove(removedPiecesIndex, random);
+                else whiteMove = true;
+            } else {
+                pieceMove(possibleMoves.get(random.nextInt(possibleMoves.size())));
             }
         }
-
     }
 
-    private void randomMoveHit(int removedPiecesIndex[]) { //Implements a random move with hit for the robot
+    private void randomMoveHit() { //Implements a random move with hit for the robot
         for(Piece p : pieceSets[1].getPieces()) {
             if(squares[p.getPosition().getRow()][p.getPosition().getColumn()].getPiece() == p) {
                 List<Square> moves = p.possibleMoves(squares);
@@ -361,6 +354,20 @@ public class Board extends JFrame {
         });
     }
 
+    private void pawnChange() {
+        PawnChangeWindow p = new PawnChangeWindow(movingPiece.getColor());
+        System.out.println(p.getSelectedPieceIndex() + "");
+        if(p.getSelectedPieceIndex() == 1) {
+            System.out.println("kiralyno");
+        } else if(p.getSelectedPieceIndex() == 2) {
+            System.out.println("futo");
+        } else if(p.getSelectedPieceIndex() == 3) {
+            System.out.println("lo");
+        } else if(p.getSelectedPieceIndex() == 4) {
+            System.out.println("bastya");
+        }
+    }
+
     private void pieceMove(Square square) { //Implements one move
         if(square != null) {
             if(movingPiece == null) {
@@ -386,6 +393,8 @@ public class Board extends JFrame {
                     Square oldSquare = movingPiece.getPosition();
                     if(oldSquare != square) {
                         if(possibleMoves.contains(square)) {
+                            if(whiteMove && movingPiece.getClass() != null && movingPiece.getClass() == Pawn.class && movingPiece.getColor() == "white" && square.getRow() == 0) pawnChange();
+                            else if(!whiteMove && movingPiece.getClass() != null && movingPiece.getClass() == Pawn.class && movingPiece.getColor() == "black" && square.getRow() == 7) pawnChange();
                             if(square.getPiece() != null) {
                                 movesList.add(new Move(movingPiece.getPosition(), square, square.getPiece()));
                                 square.removeAll();

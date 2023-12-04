@@ -25,4 +25,5 @@ public class Piece {
     public String getColor() {
         return color;
     }
+
 }

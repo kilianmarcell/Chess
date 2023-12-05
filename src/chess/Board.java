@@ -355,17 +355,7 @@ public class Board extends JFrame {
     }
 
     private void pawnChange() {
-        PawnChangeWindow p = new PawnChangeWindow(movingPiece.getColor());
-        System.out.println(p.getSelectedPieceIndex() + "");
-        if(p.getSelectedPieceIndex() == 1) {
-            System.out.println("kiralyno");
-        } else if(p.getSelectedPieceIndex() == 2) {
-            System.out.println("futo");
-        } else if(p.getSelectedPieceIndex() == 3) {
-            System.out.println("lo");
-        } else if(p.getSelectedPieceIndex() == 4) {
-            System.out.println("bastya");
-        }
+        PawnChangeWindow p = new PawnChangeWindow(movingPiece);
     }
 
     private void pieceMove(Square square) { //Implements one move

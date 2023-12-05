@@ -1,5 +1,11 @@
 package chess.windows;
 
+import chess.Piece;
+import chess.pieces.Bishop;
+import chess.pieces.Knight;
+import chess.pieces.Queen;
+import chess.pieces.Rook;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,8 +17,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class PawnChangeWindow extends JFrame {
-    private int selectedPieceIndex = 0;
-    public PawnChangeWindow(String color) {
+    private Piece piece;
+    public PawnChangeWindow(Piece getPiece) {
+        piece = getPiece;
         setTitle("Paraszt átalakulás");
         setLayout(new BorderLayout());
 
@@ -25,8 +32,8 @@ public class PawnChangeWindow extends JFrame {
         }
 
         int idx = 0;
-        int colorPixelStart = color.equals("white") ? 0 : 200;
-        int colorPixelStop = color.equals("white") ? 200 : 400;
+        int colorPixelStart = piece.getColor().equals("white") ? 0 : 200;
+        int colorPixelStop = piece.getColor().equals("white") ? 200 : 400;
         for (int y = colorPixelStart; y < colorPixelStop; y += 200) {
             for (int x = 200; x < 1000; x += 200) {
                 onePiecePicture[idx] = allPieces.getSubimage(x, y, 200, 200).getScaledInstance(64, 64, BufferedImage.SCALE_SMOOTH);
@@ -49,8 +56,11 @@ public class PawnChangeWindow extends JFrame {
             picture.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    if(helpI == 1) piece = new Queen(piece.getColor());
+                    if(helpI == 2) piece = new Bishop(piece.getColor());
+                    if(helpI == 3) piece = new Knight(piece.getColor());
+                    if(helpI == 4) piece = new Rook(piece.getColor());
                     super.mouseClicked(e);
-                    selectedPieceIndex = helpI;
                     dispose();
                 }
             });
@@ -63,9 +73,5 @@ public class PawnChangeWindow extends JFrame {
         setSize(800, 200);
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-
-    public int getSelectedPieceIndex() {
-        return selectedPieceIndex;
     }
 }
